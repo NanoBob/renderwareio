@@ -7,7 +7,6 @@
     <Company></Company>
     <Product>Renderware IO</Product>
     <PackageProjectUrl>https://github.com/nanobob/renderwareio</PackageProjectUrl>
-    <PackageIcon>slipe-logo.png</PackageIcon>
     <RepositoryUrl>https://github.com/nanobob/renderwareio</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
