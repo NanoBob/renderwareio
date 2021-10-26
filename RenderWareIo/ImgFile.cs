@@ -39,6 +39,7 @@ namespace RenderWareIo
             this.stream = File.Open(path, FileMode.Open);
 
             this.Img = Img.Read(this.stream);
+            this.stream.Close();
         }
 
         public void Write(string path)

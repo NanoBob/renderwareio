@@ -27,6 +27,7 @@ namespace RenderWareIo
             string data = File.ReadAllText(path);
 
             this.Ide = Ide.Read(data);
+            this.stream.Close();
         }
 
         public void Write(string path)
