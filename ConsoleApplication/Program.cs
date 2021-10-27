@@ -27,45 +27,45 @@ namespace ConsoleApplication
             ColFile newFile = new ColFile("./files/newelevator.col");
 
 
-            Console.WriteLine($"Version: {string.Join("", newFile.Col.Header.FourCC)}");
-            Console.WriteLine($"Size: {newFile.Col.Header.Size}");
-            Console.WriteLine($"Name: {string.Join("", newFile.Col.Header.Name)}");
-            Console.WriteLine($"Model ID: {newFile.Col.Header.ModelId}");
+            Console.WriteLine($"Version: {string.Join("", newFile.Col.ColCombos.First().Header.FourCC)}");
+            Console.WriteLine($"Size: {newFile.Col.ColCombos.First().Header.Size}");
+            Console.WriteLine($"Name: {string.Join("", newFile.Col.ColCombos.First().Header.Name)}");
+            Console.WriteLine($"Model ID: {newFile.Col.ColCombos.First().Header.ModelId}");
             Console.WriteLine($"Bounds:");
-            Console.WriteLine($"\tMin: {newFile.Col.Header.Bounds.Min}\n\tMax: {newFile.Col.Header.Bounds.Max}\n\tCenter: {newFile.Col.Header.Bounds.Center}\n\tRadius:  {newFile.Col.Header.Bounds.Radius}");
+            Console.WriteLine($"\tMin: {newFile.Col.ColCombos.First().Header.Bounds.Min}\n\tMax: {newFile.Col.ColCombos.First().Header.Bounds.Max}\n\tCenter: {newFile.Col.ColCombos.First().Header.Bounds.Center}\n\tRadius:  {newFile.Col.ColCombos.First().Header.Bounds.Radius}");
             Console.WriteLine("");
 
-            Console.WriteLine($"Sphere count: {newFile.Col.Header.SphereCount}");
-            Console.WriteLine($"Box count: {newFile.Col.Header.BoxCount}");
-            Console.WriteLine($"Face count: {newFile.Col.Header.FaceCount}");
-            Console.WriteLine($"Line count: {newFile.Col.Header.LineCount}");
+            Console.WriteLine($"Sphere count: {newFile.Col.ColCombos.First().Header.SphereCount}");
+            Console.WriteLine($"Box count: {newFile.Col.ColCombos.First().Header.BoxCount}");
+            Console.WriteLine($"Face count: {newFile.Col.ColCombos.First().Header.FaceCount}");
+            Console.WriteLine($"Line count: {newFile.Col.ColCombos.First().Header.LineCount}");
             Console.WriteLine("");
 
-            Console.WriteLine($"Flags: {newFile.Col.Header.Flags}");
+            Console.WriteLine($"Flags: {newFile.Col.ColCombos.First().Header.Flags}");
             Console.WriteLine("");
 
-            Console.WriteLine($"Sphere offset: {newFile.Col.Header.SphereOffset}");
-            Console.WriteLine($"Box offset: {newFile.Col.Header.BoxOffset}");
-            Console.WriteLine($"Line offset: {newFile.Col.Header.LineOffset}");
-            Console.WriteLine($"Vertex offset: {newFile.Col.Header.VertexOffset}");
-            Console.WriteLine($"Face offset: {newFile.Col.Header.FaceOffset}");
-            Console.WriteLine($"Triangle plane offset: {newFile.Col.Header.TrianglePlaneOffset}");
+            Console.WriteLine($"Sphere offset: {newFile.Col.ColCombos.First().Header.SphereOffset}");
+            Console.WriteLine($"Box offset: {newFile.Col.ColCombos.First().Header.BoxOffset}");
+            Console.WriteLine($"Line offset: {newFile.Col.ColCombos.First().Header.LineOffset}");
+            Console.WriteLine($"Vertex offset: {newFile.Col.ColCombos.First().Header.VertexOffset}");
+            Console.WriteLine($"Face offset: {newFile.Col.ColCombos.First().Header.FaceOffset}");
+            Console.WriteLine($"Triangle plane offset: {newFile.Col.ColCombos.First().Header.TrianglePlaneOffset}");
             Console.WriteLine("");
 
 
-            Console.WriteLine($"Shadow mesh face count: {newFile.Col.Header.ShadowMeshFaceCount}");
-            Console.WriteLine($"Shadow mesh vertex offset: {newFile.Col.Header.ShadowMeshVertexOffset}");
-            Console.WriteLine($"Shadow mesh face offset: {newFile.Col.Header.ShadowMeshFaceOffset}");
+            Console.WriteLine($"Shadow mesh face count: {newFile.Col.ColCombos.First().Header.ShadowMeshFaceCount}");
+            Console.WriteLine($"Shadow mesh vertex offset: {newFile.Col.ColCombos.First().Header.ShadowMeshVertexOffset}");
+            Console.WriteLine($"Shadow mesh face offset: {newFile.Col.ColCombos.First().Header.ShadowMeshFaceOffset}");
             Console.WriteLine("");
 
             Console.WriteLine($"Vertices: ");
-            foreach (Vertex vertex in newFile.Col.Body.Vertices)
+            foreach (Vertex vertex in newFile.Col.ColCombos.First().Body.Vertices)
             {
                 Console.WriteLine($"\tX: {vertex.FirstFloat}, Y: {vertex.SecondFloat}, Z: {vertex.ThirdFloat}");
             }
 
             Console.WriteLine($"Faces: ");
-            foreach (Face face in newFile.Col.Body.Faces)
+            foreach (Face face in newFile.Col.ColCombos.First().Body.Faces)
             {
                 Console.WriteLine($"\tX: {face.A}, Y: {face.B}, Z: {face.C}");
             }
@@ -465,33 +465,38 @@ namespace ConsoleApplication
             var colFile = new ColFile();
             var col = colFile.Col;
 
-            col.Header = new Header();
-            col.Body = new Body()
-            {
-                Spheres = new List<Sphere>(),
-                Boxes = new List<Box>(),
-                Vertices = dff.Clump.GeometryList.Geometries.First().MorphTargets.First().Vertices
-                    .Select(vertex => new Vertex()
+            col.ColCombos = new List<ColCombo>(){
+                new ColCombo()
+                {
+                    Header = new Header(),
+                    Body = new Body()
                     {
-                        FirstFloat = vertex.X,
-                        SecondFloat = vertex.Y,
-                        ThirdFloat = vertex.Z,
-                    })
-                    .ToList(),
-                FaceGroups = new List<FaceGroup>(),
-                FaceGroupCount = 0,
-                Faces = dff.Clump.GeometryList.Geometries.First().Triangles
-                    .Select(triangle => new Face()
-                    {
-                        A = triangle.VertexIndexOne,
-                        B = triangle.VertexIndexTwo,
-                        C = triangle.VertexIndexThree,
-                        Light = 0,
-                        Material = 0
-                    })
-                    .ToList(),
-                ShadowMeshVertices = new List<Vertex>(),
-                ShadowMeshFaces = new List<Face>()
+                        Spheres = new List<Sphere>(),
+                        Boxes = new List<Box>(),
+                        Vertices = dff.Clump.GeometryList.Geometries.First().MorphTargets.First().Vertices
+                            .Select(vertex => new Vertex()
+                            {
+                                FirstFloat = vertex.X,
+                                SecondFloat = vertex.Y,
+                                ThirdFloat = vertex.Z,
+                            })
+                            .ToList(),
+                        FaceGroups = new List<FaceGroup>(),
+                        FaceGroupCount = 0,
+                        Faces = dff.Clump.GeometryList.Geometries.First().Triangles
+                            .Select(triangle => new Face()
+                            {
+                                A = triangle.VertexIndexOne,
+                                B = triangle.VertexIndexTwo,
+                                C = triangle.VertexIndexThree,
+                                Light = 0,
+                                Material = 0
+                            })
+                            .ToList(),
+                        ShadowMeshVertices = new List<Vertex>(),
+                        ShadowMeshFaces = new List<Face>()
+                    }
+                }
             };
 
             //var x = new ColFile("./files/3x3.col");
@@ -668,6 +673,13 @@ namespace ConsoleApplication
 
         }
 
+        static void GroupColTest(string imgPath, string colName)
+        {
+            using var imgFile = new ImgFile(imgPath);
+            var img = imgFile.Img;
+            var col = new ColFile(img.DataEntries[colName].Data).Col;
+        }
+
         static void Main(string[] args)
         {
             //ImgTest();
@@ -724,8 +736,8 @@ namespace ConsoleApplication
             //    @"C:\Program Files (x86)\Rockstar Games\GTA San AndreasAtlantis\models\Mainland.img",
             //    @"C:\Program Files (x86)\Rockstar Games\GTA San AndreasAtlantis\models\Mainland");
 
-            BinMeshTest(@"D:\code\Unity\Project Abydos\Assets\Game\Models\SGC\Level27-28\lab_telephone3.dff");
-
+            //BinMeshTest(@"D:\code\Unity\Project Abydos\Assets\Game\Models\SGC\Level27-28\lab_telephone3.dff");
+            GroupColTest(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta3.img", "vegepart.col");
             //Console.WriteLine("Press any key to quit...");
 
         }

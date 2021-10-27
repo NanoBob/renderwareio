@@ -7,7 +7,7 @@ using System.Text;
 
 namespace RenderWareIo
 {
-    public class ImgFile
+    public class ImgFile : IDisposable
     {
         Stream stream;
 
@@ -39,7 +39,6 @@ namespace RenderWareIo
             this.stream = File.Open(path, FileMode.Open);
 
             this.Img = Img.Read(this.stream);
-            this.stream.Close();
         }
 
         public void Write(string path)
@@ -55,6 +54,16 @@ namespace RenderWareIo
                 File.WriteAllBytes(path, buffer);
             }
 
+        }
+
+        public void Close()
+        {
+            this.stream.Close();
+        }
+
+        public void Dispose()
+        {
+            Close();
         }
     }
 }

@@ -24,7 +24,7 @@ namespace RenderWareIo
         {
             this.stream = new MemoryStream(data);
 
-            this.Col = Col.Read(this.stream);
+            this.Col = (new Col()).Read(this.stream);
             this.stream.Close();
         }
 
