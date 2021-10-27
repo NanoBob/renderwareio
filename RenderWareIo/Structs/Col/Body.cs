@@ -78,26 +78,30 @@ namespace RenderWareIo.Structs.Col
 
             var faces = ReadBinaryStructure<Face>(stream, header.FaceCount);
 
-            var shadowVertices = ReadBinaryStructure<Vertex>(stream, shadowVertexCount);
-            if ((shadowVertexCount * 6) % 4 != 0 && stream.Position != stream.Length)
-            {
-                _ = RenderWareFileHelper.ReadChars(stream, 2);
-            }
-            var shadowFaces = ReadBinaryStructure<Face>(stream, (int)header.ShadowMeshFaceCount);
-
-
             this.Spheres = spheres;
             this.Boxes = boxes;
             this.Vertices = vertices;
             this.FaceGroupCount = faceGroupCount;
             this.FaceGroups = faceGroups;
             this.Faces = faces;
-            this.ShadowMeshVertices = shadowVertices;
-            this.ShadowMeshFaces = shadowFaces;
+
+            if (header.ColVersion >= 3)
+            {
+                var shadowVertices = ReadBinaryStructure<Vertex>(stream, shadowVertexCount);
+                if ((shadowVertexCount * 6) % 4 != 0 && stream.Position != stream.Length)
+                {
+                    _ = RenderWareFileHelper.ReadChars(stream, 2);
+                }
+                var shadowFaces = ReadBinaryStructure<Face>(stream, (int)header.ShadowMeshFaceCount);
+
+                this.ShadowMeshVertices = shadowVertices;
+                this.ShadowMeshFaces = shadowFaces;
+            }
+
             return this;
         }
 
-        public void Write(Stream stream)
+        public void Write(Stream stream, Header header)
         {
             WriteBinaryStructure(stream, this.Spheres);
             WriteBinaryStructure(stream, this.Boxes);
@@ -115,14 +119,18 @@ namespace RenderWareIo.Structs.Col
             }
 
             WriteBinaryStructure(stream, this.Faces);
-            WriteBinaryStructure(stream, this.ShadowMeshVertices);
 
-            if ((this.ShadowMeshVertices.Count * 6) % 4 != 0 && stream.Position != stream.Length)
+            if (header.ColVersion >= 3)
             {
-                RenderWareFileHelper.WriteChars(stream, new char[] { '\0', '\0' });
-            }
+                WriteBinaryStructure(stream, this.ShadowMeshVertices);
 
-            WriteBinaryStructure(stream, this.ShadowMeshFaces);
+                if ((this.ShadowMeshVertices.Count * 6) % 4 != 0 && stream.Position != stream.Length)
+                {
+                    RenderWareFileHelper.WriteChars(stream, new char[] { '\0', '\0' });
+                }
+
+                WriteBinaryStructure(stream, this.ShadowMeshFaces);
+            }
         }
     }
 }

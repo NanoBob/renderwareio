@@ -1,4 +1,5 @@
-﻿using RenderWareIo.ReadWriteHelpers;
+﻿using RenderWareIo.Constants;
+using RenderWareIo.ReadWriteHelpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -39,8 +40,11 @@ namespace RenderWareIo.Structs.Col
         public uint ShadowMeshFaceCount { get; set; }
         public uint ShadowMeshVertexOffset { get; set; }
         public uint ShadowMeshFaceOffset { get; set; }
-        
 
+        public int ColVersion =>
+            this.FourCC.Select(x => (byte)x).SequenceEqual(ColConstants.Col2) ? 2 :
+            this.FourCC.Select(x => (byte)x).SequenceEqual(ColConstants.Col3) ? 3 :
+            1;
 
         public Header Read(Stream stream)
         {
@@ -65,9 +69,12 @@ namespace RenderWareIo.Structs.Col
             this.FaceOffset = RenderWareFileHelper.ReadUint32(stream);
             this.TrianglePlaneOffset = RenderWareFileHelper.ReadUint32(stream);
 
-            this.ShadowMeshFaceCount = RenderWareFileHelper.ReadUint32(stream);
-            this.ShadowMeshVertexOffset = RenderWareFileHelper.ReadUint32(stream);
-            this.ShadowMeshFaceOffset = RenderWareFileHelper.ReadUint32(stream);
+            if (this.ColVersion >= 3)
+            {
+                this.ShadowMeshFaceCount = RenderWareFileHelper.ReadUint32(stream);
+                this.ShadowMeshVertexOffset = RenderWareFileHelper.ReadUint32(stream);
+                this.ShadowMeshFaceOffset = RenderWareFileHelper.ReadUint32(stream);
+            }
 
             return this;
         }
@@ -95,9 +102,12 @@ namespace RenderWareIo.Structs.Col
             RenderWareFileHelper.WriteUint32(stream, this.FaceOffset);
             RenderWareFileHelper.WriteUint32(stream, this.TrianglePlaneOffset);
 
-            RenderWareFileHelper.WriteUint32(stream, this.ShadowMeshFaceCount);
-            RenderWareFileHelper.WriteUint32(stream, this.ShadowMeshVertexOffset);
-            RenderWareFileHelper.WriteUint32(stream, this.ShadowMeshFaceOffset);
+            if (this.ColVersion >= 3)
+            {
+                RenderWareFileHelper.WriteUint32(stream, this.ShadowMeshFaceCount);
+                RenderWareFileHelper.WriteUint32(stream, this.ShadowMeshVertexOffset);
+                RenderWareFileHelper.WriteUint32(stream, this.ShadowMeshFaceOffset);
+            }
         }
 
         public Bounds GenerateBounds(Body body)

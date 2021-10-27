@@ -737,7 +737,7 @@ namespace ConsoleApplication
             //    @"C:\Program Files (x86)\Rockstar Games\GTA San AndreasAtlantis\models\Mainland");
 
             //BinMeshTest(@"D:\code\Unity\Project Abydos\Assets\Game\Models\SGC\Level27-28\lab_telephone3.dff");
-            GroupColTest(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta3.img", "vegepart.col");
+            GroupColTest(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta3.img", "barriers.col");
             //Console.WriteLine("Press any key to quit...");
 
         }
