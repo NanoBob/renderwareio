@@ -42,35 +42,42 @@ namespace RenderWareBuilders
 
         public Col Build()
         {
-            var col = new Col();
-
-            col.Header = new Header();
-            col.Body = new Body()
+            var col = new Col()
             {
-                Spheres = new List<Sphere>(),
-                Boxes = new List<Box>(),
-                Vertices = this.vertices
-                    .Select(vertex => new RenderWareIo.Structs.Col.Vertex()
+                ColCombos = new List<ColCombo>()
+                {
+                    new ColCombo()
                     {
-                        FirstFloat = vertex.Position.X,
-                        SecondFloat = vertex.Position.Y,
-                        ThirdFloat = vertex.Position.Z,
-                    })
-                    .ToList(),
-                FaceGroups = new List<FaceGroup>(),
-                FaceGroupCount = 0,
-                Faces = this.triangles
-                    .Select(triangle => new Face()
-                    {
-                        A = triangle.Vertex1.Index,
-                        B = triangle.Vertex2.Index,
-                        C = triangle.Vertex3.Index,
-                        Light = 0,
-                        Material = 0
-                    })
-                    .ToList(),
-                ShadowMeshVertices = new List<RenderWareIo.Structs.Col.Vertex>(),
-                ShadowMeshFaces = new List<Face>()
+                        Header = new Header(),
+                        Body = new Body()
+                        {
+                            Spheres = new List<Sphere>(),
+                            Boxes = new List<Box>(),
+                            Vertices = this.vertices
+                                .Select(vertex => new RenderWareIo.Structs.Col.Vertex()
+                                {
+                                    FirstFloat = vertex.Position.X,
+                                    SecondFloat = vertex.Position.Y,
+                                    ThirdFloat = vertex.Position.Z,
+                                })
+                                .ToList(),
+                            FaceGroups = new List<FaceGroup>(),
+                            FaceGroupCount = 0,
+                            Faces = this.triangles
+                                .Select(triangle => new Face()
+                                {
+                                    A = triangle.Vertex1.Index,
+                                    B = triangle.Vertex2.Index,
+                                    C = triangle.Vertex3.Index,
+                                    Light = 0,
+                                    Material = 0
+                                })
+                                .ToList(),
+                            ShadowMeshVertices = new List<RenderWareIo.Structs.Col.Vertex>(),
+                            ShadowMeshFaces = new List<Face>()
+                        }
+                    }
+                }
             };
 
             return col;
