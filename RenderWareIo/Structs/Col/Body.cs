@@ -52,13 +52,19 @@ namespace RenderWareIo.Structs.Col
             }
         }
 
-        public Body Read(Stream stream, Header header)
+        public Body Read(Stream stream, Header header, long start)
         {
-            int vertexCount = (int)((header.FaceOffset - header.VertexOffset) / 6);
             int shadowVertexCount = 0;
 
             var spheres = ReadBinaryStructure<Sphere>(stream, header.SphereCount);
             var boxes = ReadBinaryStructure<Box>(stream, header.BoxCount);
+
+            var vertexStart = stream.Position;
+            stream.Position = start + header.FaceOffset + 4;
+            var faces = ReadBinaryStructure<Face>(stream, header.FaceCount);
+            stream.Position = start + header.VertexOffset + 4;
+
+            int vertexCount = faces.Any() ? faces.Max(x => Math.Max(Math.Max(x.A, x.B), x.C)) + 1 : 0;
             var vertices = ReadBinaryStructure<Vertex>(stream, vertexCount);
 
             if ((vertexCount * 6) % 4 != 0 && stream.Position != stream.Length)
@@ -71,12 +77,10 @@ namespace RenderWareIo.Structs.Col
 
             if ((header.Flags & 8) != 0)
             {
-                Console.WriteLine("Reading faces");
                 faceGroupCount = RenderWareFileHelper.ReadUint32(stream); // switch ???
                 faceGroups = ReadBinaryStructure<FaceGroup>(stream, 0);// (int)faceGroupCount); // switch ???
             }
 
-            var faces = ReadBinaryStructure<Face>(stream, header.FaceCount);
 
             this.Spheres = spheres;
             this.Boxes = boxes;
@@ -85,8 +89,12 @@ namespace RenderWareIo.Structs.Col
             this.FaceGroups = faceGroups;
             this.Faces = faces;
 
-            if (header.ColVersion >= 3)
+            if (header.ColVersion >= 3 )
             {
+                if (header.ShadowMeshFaceCount > 0)
+                {
+                    stream.Position = start + header.ShadowMeshVertexOffset + 4;
+                }
                 var shadowVertices = ReadBinaryStructure<Vertex>(stream, shadowVertexCount);
                 if ((shadowVertexCount * 6) % 4 != 0 && stream.Position != stream.Length)
                 {

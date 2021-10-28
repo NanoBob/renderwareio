@@ -15,8 +15,9 @@ namespace RenderWareIo.Structs.Col
 
         public ColCombo Read(Stream stream)
         {
+            var start = stream.Position;
             this.Header = Header.Read(stream);
-            this.Body = Body.Read(stream, this.Header);
+            this.Body = Body.Read(stream, this.Header, start);
             return this;
         }
 

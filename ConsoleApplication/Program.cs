@@ -680,6 +680,30 @@ namespace ConsoleApplication
             var col = new ColFile(img.DataEntries[colName].Data).Col;
         }
 
+        static void ScanColsFor(string imgPath, string colName)
+        {
+
+            using var imgFile = new ImgFile(imgPath);
+            var img = imgFile.Img;
+            foreach (var entry in img.DataEntries)
+            {
+                if (entry.Key.EndsWith(".col"))
+                {
+                    try
+                    {
+                        var col = new ColFile(entry.Value.Data).Col;
+                        if (col.ColCombos.Any(x => string.Concat(x.Header.Name).StartsWith(colName, StringComparison.OrdinalIgnoreCase)))
+                        {
+                            Console.WriteLine(entry.Key);
+                        }
+                    } catch (Exception e)
+                    {
+
+                    }
+                }
+            }
+        }
+
         static void Main(string[] args)
         {
             //ImgTest();
@@ -737,7 +761,9 @@ namespace ConsoleApplication
             //    @"C:\Program Files (x86)\Rockstar Games\GTA San AndreasAtlantis\models\Mainland");
 
             //BinMeshTest(@"D:\code\Unity\Project Abydos\Assets\Game\Models\SGC\Level27-28\lab_telephone3.dff");
-            GroupColTest(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta3.img", "barriers.col");
+            GroupColTest(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta3.img", "countn2_20.col");
+            ScanColsFor(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta3.img", "des_ufoinn");
+            ScanColsFor(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta_int.img", "pinetree05");
             //Console.WriteLine("Press any key to quit...");
 
         }
