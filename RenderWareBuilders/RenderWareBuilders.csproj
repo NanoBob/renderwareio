@@ -1,11 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>0.1.0</Version>
+    <Authors>NanoBob</Authors>
+    <Company></Company>
+    <Product>Renderware IO builders</Product>
+    <PackageProjectUrl>https://github.com/nanobob/renderwareio</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nanobob/renderwareio</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Description>Renderware IO builder library</Description>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\RenderWareIo\RenderWareIo.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

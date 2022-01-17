@@ -34,7 +34,7 @@ steps:
   displayName: 'dotnet pack'
   inputs:
     command: 'pack'
-    packagesToPack: '**/RenderWareIo.csproj'
+    packagesToPack: '**/RenderWareIo.csproj;**/RenderWareBuilders.csproj'
     versioningScheme: 'byPrereleaseNumber'
     majorVersion: '0'
     minorVersion: '1'
