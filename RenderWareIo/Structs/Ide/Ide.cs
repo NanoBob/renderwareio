@@ -12,19 +12,21 @@ namespace RenderWareIo.Structs.Ide
         public List<Tobj> Tobjs;
         public List<Anim> Anims;
         public List<Txdp> Txdps;
+        public List<Ped> Peds;
 
         private void ParseLine(string line)
         {
             if (line.TrimStart().StartsWith("#"))
+                return;
+
+            if (!line.Contains(",") && line.Trim().Trim('\r').Length > 0)
             {
+                lastHeader = line.Trim('\r').Trim();
                 return;
             }
 
-            if (!line.Contains(","))
-            {
-                lastHeader = line.Trim();
+            if (line.Trim('\r').Trim().Length == 0)
                 return;
-            }
 
             switch (lastHeader)
             {
@@ -40,6 +42,9 @@ namespace RenderWareIo.Structs.Ide
                 case "txdp":
                     Txdps.Add(new Txdp().Read(line));
                     break;
+                case "peds":
+                    Peds.Add(new Ped().Read(line));
+                    break;
             }
         }
 
@@ -49,6 +54,7 @@ namespace RenderWareIo.Structs.Ide
             this.Tobjs = new List<Tobj>();
             this.Anims = new List<Anim>();
             this.Txdps = new List<Txdp>();
+            this.Peds = new List<Ped>();
 
             string[] lines = content.Split('\n');
             foreach(string line in lines)
