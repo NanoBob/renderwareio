@@ -25,7 +25,7 @@ namespace RenderWareIo
         {
             this.stream = new MemoryStream(data);
 
-            this.Img = Img.Read(this.stream);
+            this.Img = (new Img()).Read(this.stream);
             this.stream.Close();
         }
 
