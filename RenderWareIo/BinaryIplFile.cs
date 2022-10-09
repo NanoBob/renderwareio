@@ -24,7 +24,7 @@ namespace RenderWareIo
         {
             this.stream = new MemoryStream(data);
 
-            this.BinaryIpl = BinaryIpl.Read(this.stream);
+            this.BinaryIpl = (new BinaryIpl()).Read(this.stream);
             this.stream.Close();
         }
 

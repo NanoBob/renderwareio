@@ -21,8 +21,7 @@ namespace RenderWareIo
         public TxdFile(byte[] data)
         {
             this.stream = new MemoryStream(data);
-
-            this.Txd = Txd.Read(this.stream);
+            this.Txd = (new Txd()).Read(this.stream);
             this.stream.Close();
         }
 
