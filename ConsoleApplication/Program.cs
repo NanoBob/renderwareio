@@ -704,6 +704,40 @@ namespace ConsoleApplication
             }
         }
 
+        private static void WeaponIdeFileTest()
+        {
+            IdeFile ideFile = new(@"E:\Game Library\steamapps\common\Grand Theft Auto San Andreas\data\default.ide");
+
+            Console.WriteLine($"guns: ");
+            foreach (var gun in ideFile.Ide.Weapons)
+            {
+                Console.WriteLine($"\tId: {gun.Id}");
+                Console.WriteLine($"\tModel: {gun.ModelName}");
+                Console.WriteLine($"\tTexture: {gun.TxdName}");
+                Console.WriteLine($"");
+            }
+        }
+
+        private static void WeaponDatFileTest()
+        {
+            DatFile datFile = new(@"E:\Game Library\steamapps\common\Grand Theft Auto San Andreas\data\weapon.dat");
+
+            Console.WriteLine($"guns: ");
+            foreach (var gun in datFile.Dat.Guns)
+            {
+                Console.WriteLine($"\tWeapon: {gun.WeaponType}");
+                Console.WriteLine($"\tModel: {gun.Model1Id}");
+                Console.WriteLine($"");
+            }
+            Console.WriteLine($"melee: ");
+            foreach (var weapon in datFile.Dat.MeleeWeapons)
+            {
+                Console.WriteLine($"\tWeapon: {weapon.WeaponType}");
+                Console.WriteLine($"\tModel: {weapon.Model1Id}");
+                Console.WriteLine($"");
+            }
+        }
+
         static void Main(string[] args)
         {
             //ImgTest();
@@ -761,10 +795,13 @@ namespace ConsoleApplication
             //    @"C:\Program Files (x86)\Rockstar Games\GTA San AndreasAtlantis\models\Mainland");
 
             //BinMeshTest(@"D:\code\Unity\Project Abydos\Assets\Game\Models\SGC\Level27-28\lab_telephone3.dff");
-            GroupColTest(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta3.img", "countn2_20.col");
-            ScanColsFor(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta3.img", "des_ufoinn");
-            ScanColsFor(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta_int.img", "pinetree05");
+            //GroupColTest(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta3.img", "countn2_20.col");
+            //ScanColsFor(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta3.img", "des_ufoinn");
+            //ScanColsFor(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta_int.img", "pinetree05");
             //Console.WriteLine("Press any key to quit...");
+
+            WeaponIdeFileTest();
+            WeaponDatFileTest();
 
         }
     }

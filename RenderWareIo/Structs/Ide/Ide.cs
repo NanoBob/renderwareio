@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace RenderWareIo.Structs.Ide
 {
@@ -13,6 +11,7 @@ namespace RenderWareIo.Structs.Ide
         public List<Anim> Anims;
         public List<Txdp> Txdps;
         public List<Ped> Peds;
+        public List<Weapon> Weapons;
 
         private void ParseLine(string line)
         {
@@ -45,6 +44,9 @@ namespace RenderWareIo.Structs.Ide
                 case "peds":
                     Peds.Add(new Ped().Read(line));
                     break;
+                case "weap":
+                    Weapons.Add(new Weapon().Read(line));
+                    break;
             }
         }
 
@@ -55,9 +57,10 @@ namespace RenderWareIo.Structs.Ide
             this.Anims = new List<Anim>();
             this.Txdps = new List<Txdp>();
             this.Peds = new List<Ped>();
+            this.Weapons = new List<Weapon>();
 
             string[] lines = content.Split('\n');
-            foreach(string line in lines)
+            foreach (string line in lines)
             {
                 this.ParseLine(line);
             }
