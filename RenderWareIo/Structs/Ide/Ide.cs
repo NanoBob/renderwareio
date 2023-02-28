@@ -12,6 +12,7 @@ namespace RenderWareIo.Structs.Ide
         public List<Txdp> Txdps;
         public List<Ped> Peds;
         public List<Weapon> Weapons;
+        public List<Car> Cars;
 
         private void ParseLine(string line)
         {
@@ -47,6 +48,9 @@ namespace RenderWareIo.Structs.Ide
                 case "weap":
                     Weapons.Add(new Weapon().Read(line));
                     break;
+                case "cars":
+                    Cars.Add(new Car().Read(line));
+                    break;
             }
         }
 
@@ -58,6 +62,7 @@ namespace RenderWareIo.Structs.Ide
             this.Txdps = new List<Txdp>();
             this.Peds = new List<Ped>();
             this.Weapons = new List<Weapon>();
+            this.Cars = new List<Car>();
 
             string[] lines = content.Split('\n');
             foreach (string line in lines)

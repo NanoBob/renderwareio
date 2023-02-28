@@ -1,11 +1,9 @@
 ﻿using Newtonsoft.Json;
 using RenderWareIo;
-using RenderWareIo.ReadWriteHelpers;
 using RenderWareIo.Structs.BinaryIpl;
 using RenderWareIo.Structs.Col;
 using RenderWareIo.Structs.Dff;
 using RenderWareIo.Structs.Ide;
-using RenderWareIo.Structs.Img;
 using RenderWareIo.Structs.Ipl;
 using RenderWareIo.Structs.Txd;
 using System;
@@ -93,7 +91,7 @@ namespace ConsoleApplication
             Console.WriteLine($"");
 
             Console.WriteLine("Textures: ");
-            foreach(RenderWareIo.Structs.Txd.Texture texture in newFile.Txd.TextureContainer.Textures)
+            foreach (RenderWareIo.Structs.Txd.Texture texture in newFile.Txd.TextureContainer.Textures)
             {
                 Console.WriteLine($"\tType: {texture.Header.Type}");
                 Console.WriteLine($"\tSize: {texture.Header.Size}");
@@ -124,7 +122,7 @@ namespace ConsoleApplication
                 Console.WriteLine($"\tData length: {texture.Data.Data.Length}");
 
                 Console.WriteLine($"\tMip maps:");
-                foreach(MipMap mipMap in texture.Data.MipMaps)
+                foreach (MipMap mipMap in texture.Data.MipMaps)
                 {
                     Console.WriteLine($"\t\tSize: {mipMap.Size}");
                 }
@@ -167,7 +165,7 @@ namespace ConsoleApplication
             //Console.WriteLine($"Frame list marker: {newFile.Dff.Clump.FrameList.Header.Marker} ({newFile.Dff.Clump.FrameList.Header.Marker.ToString("X2")})");
             Console.WriteLine($"Frame count: {newFile.Dff.Clump.FrameList.FrameCount}");
 
-            foreach(Frame frame in newFile.Dff.Clump.FrameList.Frames)
+            foreach (Frame frame in newFile.Dff.Clump.FrameList.Frames)
             {
                 Console.WriteLine($"\tRot 1: {frame.Rot1.X}, {frame.Rot1.Y}, {frame.Rot1.Z}");
                 Console.WriteLine($"\tRot 2: {frame.Rot2.X}, {frame.Rot2.Y}, {frame.Rot2.Z}");
@@ -205,9 +203,9 @@ namespace ConsoleApplication
                     //Console.WriteLine($"\t\tVertex 1: {triangle.VertexIndexOne}, Vertex 2: {triangle.VertexIndexTwo}, Vertex 3: {triangle.VertexIndexThree}, Material: {triangle.MaterialIndex}");
                 }
                 Console.WriteLine($"\tSphere: Position: ({geometry.Sphere.Position.X}, {geometry.Sphere.Position.Y}, {geometry.Sphere.Position.Z}), Radius: {geometry.Sphere.Radius}");
-                
+
                 Console.WriteLine($"\tMorph targets: ");
-                foreach(var morphTarget in geometry.MorphTargets)
+                foreach (var morphTarget in geometry.MorphTargets)
                 {
                     Console.WriteLine($"\t\tMorph target vertex count: {morphTarget.Vertices.Count}");
                     Console.WriteLine($"\t\tMorph target normal count: {morphTarget.Normals.Count}");
@@ -318,7 +316,7 @@ namespace ConsoleApplication
             Console.WriteLine($"Instance count: {iplFile.BinaryIpl.Header.InstanceCount}");
             Console.WriteLine($"Car count: {iplFile.BinaryIpl.Header.CarCount}");
             Console.WriteLine($"Instance offset: {iplFile.BinaryIpl.Header.ItemOffset}");
-            
+
             Console.WriteLine($"Insts: ");
             foreach (BinaryInst inst in iplFile.BinaryIpl.Insts)
             {
@@ -579,8 +577,8 @@ namespace ConsoleApplication
             var frameName = "Frame";
             byte[] buffer = new byte[] { 0xfe, 0xf2, 0x53, 0x02, }
                 .Concat(BitConverter.GetBytes(frameName.Length % 4 == 0 ? (uint)frameName.Length : (uint)((frameName.Length / 4) + 1) * 4))
-                .Concat(new byte[]{ 0xff, 0xff, 0x03, 0x18 })
-                .Concat(frameName.Select(c => (byte) c))
+                .Concat(new byte[] { 0xff, 0xff, 0x03, 0x18 })
+                .Concat(frameName.Select(c => (byte)c))
                 .Concat(new byte[4 - (frameName.Length % 4)])
                 .ToArray();
 
@@ -629,7 +627,7 @@ namespace ConsoleApplication
 
             var objs = new List<Obj>();
 
-            foreach(var idePath in files)
+            foreach (var idePath in files)
             {
                 var ide = new IdeFile(idePath);
                 objs = objs.Concat(ide.Ide.Objs).ToList();
@@ -696,11 +694,26 @@ namespace ConsoleApplication
                         {
                             Console.WriteLine(entry.Key);
                         }
-                    } catch (Exception e)
+                    }
+                    catch (Exception e)
                     {
 
                     }
                 }
+            }
+        }
+
+        private static void CarIdeFileTest()
+        {
+            IdeFile ideFile = new(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas\data\vehicles.ide");
+
+            Console.WriteLine($"vehicles: ");
+            foreach (var car in ideFile.Ide.Cars)
+            {
+                Console.WriteLine($"\tId: {car.Id}");
+                Console.WriteLine($"\tModel: {car.ModelName}");
+                Console.WriteLine($"\tTexture: {car.TxdName}");
+                Console.WriteLine($"");
             }
         }
 
@@ -800,8 +813,9 @@ namespace ConsoleApplication
             //ScanColsFor(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta_int.img", "pinetree05");
             //Console.WriteLine("Press any key to quit...");
 
-            WeaponIdeFileTest();
-            WeaponDatFileTest();
+            //WeaponIdeFileTest();
+            //WeaponDatFileTest();
+            CarIdeFileTest();
 
         }
     }
