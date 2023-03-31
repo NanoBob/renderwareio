@@ -1,5 +1,6 @@
 ﻿using RenderWareIo.Structs.Col;
 using RenderWareIo.Structs.Dff;
+using RenderWareIo.Structs.Dff.Plugins;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +11,14 @@ namespace RenderWareBuilders
     public class RenderWareBuilder
     {
         private readonly List<Vertex> vertices;
+        private readonly List<PrelitVertex> prelitVertices;
         private readonly List<Triangle> triangles;
         private readonly List<Material> materials;
 
         public RenderWareBuilder()
         {
             this.vertices = new List<Vertex>();
+            this.prelitVertices = new List<PrelitVertex>();
             this.triangles = new List<Triangle>();
             this.materials = new List<Material>();
         }
@@ -24,6 +27,13 @@ namespace RenderWareBuilders
         {
             vertex.Index = (ushort)this.vertices.Count;
             this.vertices.Add(vertex);
+            return vertex;
+        }
+        
+        public Vertex AddVertex(PrelitVertex vertex)
+        {
+            vertex.Index = (ushort)this.prelitVertices.Count;
+            this.prelitVertices.Add(vertex);
             return vertex;
         }
 
@@ -59,6 +69,8 @@ namespace RenderWareBuilders
             var geometry = new Geometry();
             var morphTarget = new MorphTarget();
 
+            geometry.Flags = 0x76;
+
             foreach (var material in this.materials) 
             {
                 geometry.MaterialList.Materials.Add(new RenderWareIo.Structs.Dff.Material()
@@ -85,11 +97,28 @@ namespace RenderWareBuilders
                 });;
             }
 
-            foreach (var vertex in this.vertices)
+            if(this.prelitVertices.Any())
             {
-                morphTarget.Vertices.Add(vertex.Position);
-                morphTarget.Normals.Add(vertex.Normal);
-                geometry.TexCoords.Add(new Uv() { X = vertex.Uv.X, Y = vertex.Uv.Y });
+                geometry.Flags |= (int)GeometryFlags.PRELIT;
+
+                foreach (var vertex in this.prelitVertices)
+                {
+                    morphTarget.Vertices.Add(vertex.Position);
+                    morphTarget.Normals.Add(vertex.Normal);
+                    geometry.TexCoords.Add(new Uv() { X = vertex.Uv.X, Y = vertex.Uv.Y });
+                    geometry.Colors.Add(new Color(vertex.Day));
+                }
+
+                geometry.Extension.Extensions.Add(new NightVertex(prelitVertices.Select(x => x.Night).ToArray()));
+            }
+            else
+            {
+                foreach (var vertex in this.vertices)
+                {
+                    morphTarget.Vertices.Add(vertex.Position);
+                    morphTarget.Normals.Add(vertex.Normal);
+                    geometry.TexCoords.Add(new Uv() { X = vertex.Uv.X, Y = vertex.Uv.Y });
+                }
             }
 
             var min = new Vector3(morphTarget.Vertices.Min(v => v.X), morphTarget.Vertices.Min(v => v.Y), morphTarget.Vertices.Min(v => v.Z));
@@ -97,7 +126,6 @@ namespace RenderWareBuilders
             var center = min + (max - min) * 0.5f;
             var radius = morphTarget.Vertices.Max(vertex => (new Vector3(vertex.X, vertex.Y, vertex.Z) - center).Length());
 
-            geometry.Flags = 0x76;
             geometry.Sphere = new RenderWareIo.Structs.Dff.Sphere()
             {
                 Position = center,

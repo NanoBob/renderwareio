@@ -751,6 +751,88 @@ namespace ConsoleApplication
             }
         }
 
+        public static byte[] StreamToByteArray(Stream input)
+        {
+            using (var memoryStream = new MemoryStream())
+            {
+                input.CopyTo(memoryStream);
+                return memoryStream.ToArray();
+            }
+        }
+
+        private static void PrelitModel()
+        {
+            var renderWareBuilder = new RenderWareBuilders.RenderWareBuilder();
+            var material = new RenderWareBuilders.Material
+            {
+                Name = "Metal1_128",
+                Color = System.Drawing.Color.White,
+                MaskName = "",
+            };
+            renderWareBuilder.AddTriangle(new RenderWareBuilders.Triangle
+            {
+                Vertex1 = renderWareBuilder.AddVertex(new RenderWareBuilders.PrelitVertex
+                {
+                    Position = new Vector3(0, 0, 0),
+                    Normal = Vector3.UnitZ,
+                    Uv = new Vector2(0, 0),
+                    Day = System.Drawing.Color.Red,
+                    Night = System.Drawing.Color.Blue,
+                }),
+                Vertex2 = renderWareBuilder.AddVertex(new RenderWareBuilders.PrelitVertex
+                {
+                    Position = new Vector3(0, 5, 0),
+                    Normal = Vector3.UnitZ,
+                    Uv = new Vector2(0, 5),
+                    Day = System.Drawing.Color.Red,
+                    Night = System.Drawing.Color.Blue,
+                }),
+                Vertex3 = renderWareBuilder.AddVertex(new RenderWareBuilders.PrelitVertex
+                {
+                    Position = new Vector3(5, 0, 0),
+                    Normal = Vector3.UnitZ,
+                    Uv = new Vector2(5, 0),
+                    Day = System.Drawing.Color.Red,
+                    Night = System.Drawing.Color.Blue,
+                }),
+                Material = material,
+            });
+            renderWareBuilder.AddTriangle(new RenderWareBuilders.Triangle
+            {
+                Vertex1 = renderWareBuilder.AddVertex(new RenderWareBuilders.PrelitVertex
+                {
+                    Position = new Vector3(5, 0, 0),
+                    Normal = Vector3.UnitZ,
+                    Uv = new Vector2(5, 0),
+                    Day = System.Drawing.Color.Red,
+                    Night = System.Drawing.Color.Blue,
+                }),
+                Vertex2 = renderWareBuilder.AddVertex(new RenderWareBuilders.PrelitVertex
+                {
+                    Position = new Vector3(0, 5, 0),
+                    Normal = Vector3.UnitZ,
+                    Uv = new Vector2(0, 5),
+                    Day = System.Drawing.Color.Red,
+                    Night = System.Drawing.Color.Blue,
+                }),
+                Vertex3 = renderWareBuilder.AddVertex(new RenderWareBuilders.PrelitVertex
+                {
+                    Position = new Vector3(5, 5, 0),
+                    Normal = Vector3.UnitZ,
+                    Uv = new Vector2(5, 5),
+                    Day = System.Drawing.Color.Red,
+                    Night = System.Drawing.Color.Blue,
+                }),
+                Material = material,
+            });
+            renderWareBuilder.AddMaterial(material);
+            var dff = renderWareBuilder.BuildDff();
+            using var stream = new MemoryStream();
+            dff.Write(stream);
+            stream.Position = 0;
+            var byteArray = StreamToByteArray(stream);
+            File.WriteAllBytes("testPrelitModel.dff", byteArray);
+        }
         static void Main(string[] args)
         {
             //ImgTest();
@@ -815,8 +897,8 @@ namespace ConsoleApplication
 
             //WeaponIdeFileTest();
             //WeaponDatFileTest();
-            CarIdeFileTest();
-
+            //CarIdeFileTest();
+            PrelitModel();
         }
     }
 }
