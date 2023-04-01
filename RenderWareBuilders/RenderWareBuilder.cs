@@ -10,11 +10,13 @@ namespace RenderWareBuilders
 {
     public class RenderWareBuilder
     {
-        private readonly List<Vertex> vertices;
-        private readonly List<PrelitVertex> prelitVertices;
-        private readonly List<Triangle> triangles;
-        private readonly List<Material> materials;
-        private readonly Dictionary<string, MaterialId> materialCollisionMaterialIds;
+        internal readonly List<Vertex> vertices;
+        internal readonly List<PrelitVertex> prelitVertices;
+        internal readonly List<Triangle> triangles;
+        internal readonly List<Material> materials;
+        internal readonly Dictionary<string, MaterialId> materialCollisionMaterialIds;
+
+        public DebugView DebugView { get; }
 
         public RenderWareBuilder()
         {
@@ -23,6 +25,7 @@ namespace RenderWareBuilders
             this.triangles = new List<Triangle>();
             this.materials = new List<Material>();
             this.materialCollisionMaterialIds = new Dictionary<string, MaterialId>();
+            this.DebugView = new DebugView(this);
         }
 
         public void SetMaterialCollisionMaterialId(string material, MaterialId materialId)

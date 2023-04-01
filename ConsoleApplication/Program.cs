@@ -915,6 +915,66 @@ namespace ConsoleApplication
             }
         }
 
+        private static void DebugViewTest()
+        {
+            var renderWareBuilder = new RenderWareBuilders.RenderWareBuilder();
+            var material1 = new RenderWareBuilders.Material
+            {
+                Name = "Metal1_128",
+                Color = System.Drawing.Color.White,
+                MaskName = "",
+            };
+            var material2 = new RenderWareBuilders.Material
+            {
+                Name = "redmetal",
+                Color = System.Drawing.Color.White,
+                MaskName = "",
+            };
+
+            var Vertex1 = renderWareBuilder.AddVertex(new RenderWareBuilders.Vertex
+            {
+                Position = new Vector3(0, 0, 0),
+                Normal = Vector3.UnitZ,
+                Uv = new Vector2(0, 0),
+            });
+            var Vertex2 = renderWareBuilder.AddVertex(new RenderWareBuilders.Vertex
+            {
+                Position = new Vector3(0, 5, 0),
+                Normal = Vector3.UnitZ,
+                Uv = new Vector2(0, 5),
+            });
+            var Vertex3 = renderWareBuilder.AddVertex(new RenderWareBuilders.Vertex
+            {
+                Position = new Vector3(5, 0, 0),
+                Normal = Vector3.UnitZ,
+                Uv = new Vector2(5, 0),
+            });
+            var Vertex4 = renderWareBuilder.AddVertex(new RenderWareBuilders.Vertex
+            {
+                Position = new Vector3(5, 5, 0),
+                Normal = Vector3.UnitZ,
+                Uv = new Vector2(5, 5),
+            });
+
+            renderWareBuilder.AddTriangle(new RenderWareBuilders.Triangle
+            {
+                Vertex1 = Vertex1,
+                Vertex2 = Vertex2,
+                Vertex3 = Vertex3,
+                Material = material1,
+            });
+            renderWareBuilder.AddTriangle(new RenderWareBuilders.Triangle
+            {
+                Vertex1 = Vertex2,
+                Vertex2 = Vertex3,
+                Vertex3 = Vertex4,
+                Material = material2,
+            });
+
+            File.WriteAllText("debugWireframe.lua", renderWareBuilder.DebugView.Wireframe);
+            File.WriteAllText("debugVertices.lua", renderWareBuilder.DebugView.Vertices);
+        }
+
         static void Main(string[] args)
         {
             //ImgTest();
@@ -980,8 +1040,9 @@ namespace ConsoleApplication
             //WeaponIdeFileTest();
             //WeaponDatFileTest();
             //CarIdeFileTest();
-            PrelitModel();
-            CollisionMaterial();
+            //PrelitModel();
+            //CollisionMaterial();
+            DebugViewTest();
         }
     }
 }
