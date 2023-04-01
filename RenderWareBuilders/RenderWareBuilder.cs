@@ -14,6 +14,7 @@ namespace RenderWareBuilders
         private readonly List<PrelitVertex> prelitVertices;
         private readonly List<Triangle> triangles;
         private readonly List<Material> materials;
+        private readonly Dictionary<string, MaterialId> materialCollisionMaterialIds;
 
         public RenderWareBuilder()
         {
@@ -21,6 +22,12 @@ namespace RenderWareBuilders
             this.prelitVertices = new List<PrelitVertex>();
             this.triangles = new List<Triangle>();
             this.materials = new List<Material>();
+            this.materialCollisionMaterialIds = new Dictionary<string, MaterialId>();
+        }
+
+        public void SetMaterialCollisionMaterialId(string material, MaterialId materialId)
+        {
+            materialCollisionMaterialIds[material] = materialId;
         }
 
         public Vertex AddVertex(Vertex vertex)
@@ -192,13 +199,17 @@ namespace RenderWareBuilders
                             FaceGroups = new List<FaceGroup>(),
                             FaceGroupCount = 0,
                             Faces = this.triangles
-                                .Select(triangle => new Face()
-                                {
-                                    A = triangle.Vertex1.Index,
-                                    B = triangle.Vertex2.Index,
-                                    C = triangle.Vertex3.Index,
-                                    Light = 0,
-                                    Material = 0
+                                .Select(triangle => {
+                                    MaterialId materialId = MaterialId.Default;
+                                    this.materialCollisionMaterialIds.TryGetValue(triangle.Material.Name, out materialId);
+                                    return new Face()
+                                    {
+                                        A = triangle.Vertex1.Index,
+                                        B = triangle.Vertex2.Index,
+                                        C = triangle.Vertex3.Index,
+                                        Light = 0,
+                                        Material = materialId
+                                    };
                                 })
                                 .ToList(),
                             ShadowMeshVertices = new List<RenderWareIo.Structs.Col.Vertex>(),

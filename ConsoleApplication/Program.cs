@@ -833,6 +833,88 @@ namespace ConsoleApplication
             var byteArray = StreamToByteArray(stream);
             File.WriteAllBytes("testPrelitModel.dff", byteArray);
         }
+
+        private static void CollisionMaterial()
+        {
+            var renderWareBuilder = new RenderWareBuilders.RenderWareBuilder();
+            var material1 = new RenderWareBuilders.Material
+            {
+                Name = "Metal1_128",
+                Color = System.Drawing.Color.White,
+                MaskName = "",
+            };
+            var material2 = new RenderWareBuilders.Material
+            {
+                Name = "redmetal",
+                Color = System.Drawing.Color.White,
+                MaskName = "",
+            };
+            renderWareBuilder.AddTriangle(new RenderWareBuilders.Triangle
+            {
+                Vertex1 = renderWareBuilder.AddVertex(new RenderWareBuilders.PrelitVertex
+                {
+                    Position = new Vector3(0, 0, 0),
+                    Normal = Vector3.UnitZ,
+                    Uv = new Vector2(0, 0),
+                }),
+                Vertex2 = renderWareBuilder.AddVertex(new RenderWareBuilders.PrelitVertex
+                {
+                    Position = new Vector3(0, 5, 0),
+                    Normal = Vector3.UnitZ,
+                    Uv = new Vector2(0, 5),
+                }),
+                Vertex3 = renderWareBuilder.AddVertex(new RenderWareBuilders.PrelitVertex
+                {
+                    Position = new Vector3(5, 0, 0),
+                    Normal = Vector3.UnitZ,
+                    Uv = new Vector2(5, 0),
+                }),
+                Material = material1,
+            });
+            renderWareBuilder.AddTriangle(new RenderWareBuilders.Triangle
+            {
+                Vertex1 = renderWareBuilder.AddVertex(new RenderWareBuilders.Vertex
+                {
+                    Position = new Vector3(5, 0, 0),
+                    Normal = Vector3.UnitZ,
+                    Uv = new Vector2(5, 0),
+                }),
+                Vertex2 = renderWareBuilder.AddVertex(new RenderWareBuilders.Vertex
+                {
+                    Position = new Vector3(0, 5, 0),
+                    Normal = Vector3.UnitZ,
+                    Uv = new Vector2(0, 5),
+                }),
+                Vertex3 = renderWareBuilder.AddVertex(new RenderWareBuilders.Vertex
+                {
+                    Position = new Vector3(5, 5, 0),
+                    Normal = Vector3.UnitZ,
+                    Uv = new Vector2(5, 5),
+                }),
+                Material = material2,
+            });
+            renderWareBuilder.AddMaterial(material1);
+            renderWareBuilder.AddMaterial(material2);
+            renderWareBuilder.SetMaterialCollisionMaterialId(material1.Name, MaterialId.Glass);
+            renderWareBuilder.SetMaterialCollisionMaterialId(material2.Name, MaterialId.WoodThin);
+            {
+                var dff = renderWareBuilder.BuildDff();
+                using var stream = new MemoryStream();
+                dff.Write(stream);
+                stream.Position = 0;
+                var byteArray = StreamToByteArray(stream);
+                File.WriteAllBytes("collisionMaterial.dff", byteArray);
+            }
+            {
+                var col = renderWareBuilder.BuildCol();
+                using var stream = new MemoryStream();
+                col.Write(stream);
+                stream.Position = 0;
+                var byteArray = StreamToByteArray(stream);
+                File.WriteAllBytes("collisionMaterial.col", byteArray);
+            }
+        }
+
         static void Main(string[] args)
         {
             //ImgTest();
@@ -899,6 +981,7 @@ namespace ConsoleApplication
             //WeaponDatFileTest();
             //CarIdeFileTest();
             PrelitModel();
+            CollisionMaterial();
         }
     }
 }
