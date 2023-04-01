@@ -28,7 +28,7 @@ namespace RenderWareIo.Structs.Dff
         public List<IExtensionPlugin> Extensions { get; set; }
 
 
-        public uint ContentByteCount => (uint)Size;
+        public uint ContentByteCount => (uint)Size + (uint)Extensions.Sum(x => x.ByteCountWithHeader);
         public uint ByteCount => ContentByteCount;
         public uint ByteCountWithHeader => ByteCount + 12;
 
@@ -95,6 +95,10 @@ namespace RenderWareIo.Structs.Dff
             foreach (byte dataByte in this.Data)
             {
                 RenderWareFileHelper.WriteByte(stream, dataByte);
+            }
+            foreach (IExtensionPlugin extensionPlugin in this.Extensions)
+            {
+                extensionPlugin.Write(stream);
             }
         }
 

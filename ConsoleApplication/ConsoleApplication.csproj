@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RenderWareBuilders\RenderWareBuilders.csproj" />
     <ProjectReference Include="..\RenderWareIo\RenderWareIo.csproj" />
   </ItemGroup>
 

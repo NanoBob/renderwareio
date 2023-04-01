@@ -28,6 +28,14 @@ namespace RenderWareIo.Structs.Dff
             this.A = 255;
         }
 
+        public Color(System.Drawing.Color color)
+        {
+            this.R = color.R;
+            this.G = color.G;
+            this.B = color.B;
+            this.A = color.A;
+        }
+
         public Color Read(Stream stream)
         {
             this.R = RenderWareFileHelper.ReadByte(stream);
