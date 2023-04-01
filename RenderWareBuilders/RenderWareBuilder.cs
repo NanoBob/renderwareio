@@ -7,17 +7,19 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("RenderWareIo.Mta")]
-
 namespace RenderWareBuilders
 {
     public class RenderWareBuilder
     {
-        internal readonly List<Vertex> vertices;
-        internal readonly List<PrelitVertex> prelitVertices;
-        internal readonly List<Triangle> triangles;
-        internal readonly List<Material> materials;
-        internal readonly Dictionary<string, MaterialId> materialCollisionMaterialIds;
+        private readonly List<Vertex> vertices;
+        private readonly List<PrelitVertex> prelitVertices;
+        private readonly List<Triangle> triangles;
+        private readonly List<Material> materials;
+        private readonly Dictionary<string, MaterialId> materialCollisionMaterialIds;
+
+        public IReadOnlyCollection<Vertex> Vertices => vertices.AsReadOnly();
+        public IReadOnlyCollection<PrelitVertex> PrelitVertices => prelitVertices.AsReadOnly();
+        public IReadOnlyCollection<Triangle> Triangles => triangles.AsReadOnly();
 
         public RenderWareBuilder()
         {

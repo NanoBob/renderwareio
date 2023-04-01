@@ -26,16 +26,16 @@ namespace RenderWareIo.Mta
                     sb.AppendLine("\tlocal debugTextSize = debugTextSize or 2");
                     sb.AppendLine("\tlocal debugTextFont = debugTextFont or \"sans\"");
                     sb.AppendLine("\tlocal vertices = {");
-                    if (renderWareBuilder.vertices.Any())
+                    if (renderWareBuilder.Vertices.Any())
                     {
-                        foreach (var vertex in renderWareBuilder.vertices)
+                        foreach (var vertex in renderWareBuilder.Vertices)
                         {
                             sb.AppendLine($"\t\t[{vertex.Index + 1}] = {{{vertex.Position.X},{vertex.Position.Y},{vertex.Position.Z}}},");
                         }
                     }
                     else
                     {
-                        foreach (var vertex in renderWareBuilder.prelitVertices)
+                        foreach (var vertex in renderWareBuilder.PrelitVertices)
                         {
                             sb.AppendLine($"\t\t[{vertex.Index + 1}] = {{{vertex.Position.X},{vertex.Position.Y},{vertex.Position.Z}}},");
                         }
@@ -66,16 +66,16 @@ namespace RenderWareIo.Mta
                     sb.AppendLine("\tlocal lineWidth = lineWidth or 2");
                     sb.AppendLine("\tlocal lineColor = lineColor or tocolor(255,255,255,255)");
                     sb.AppendLine("\tlocal vertices = {");
-                    if (renderWareBuilder.vertices.Any())
+                    if (renderWareBuilder.Vertices.Any())
                     {
-                        foreach (var vertex in renderWareBuilder.vertices)
+                        foreach (var vertex in renderWareBuilder.Vertices)
                         {
                             sb.AppendLine($"\t\t[{vertex.Index}] = {{{vertex.Position.X},{vertex.Position.Y},{vertex.Position.Z}}},");
                         }
                     }
                     else
                     {
-                        foreach (var vertex in renderWareBuilder.prelitVertices)
+                        foreach (var vertex in renderWareBuilder.PrelitVertices)
                         {
                             sb.AppendLine($"\t\t[{vertex.Index}] = {{{vertex.Position.X},{vertex.Position.Y},{vertex.Position.Z}}},");
                         }
@@ -84,7 +84,7 @@ namespace RenderWareIo.Mta
                     sb.AppendLine("\t}");
 
                     sb.AppendLine("\tlocal triangles = {");
-                    foreach (var triangle in renderWareBuilder.triangles)
+                    foreach (var triangle in renderWareBuilder.Triangles)
                     {
                         sb.AppendLine($"\t\t[{triangle.Index}] = {{{triangle.Vertex1.Index},{triangle.Vertex2.Index},{triangle.Vertex3.Index}}},");
                     }
