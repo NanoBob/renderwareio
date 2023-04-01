@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RenderWareIo;
+using RenderWareIo.Mta;
 using RenderWareIo.Structs.BinaryIpl;
 using RenderWareIo.Structs.Col;
 using RenderWareIo.Structs.Dff;
@@ -971,8 +972,9 @@ namespace ConsoleApplication
                 Material = material2,
             });
 
-            File.WriteAllText("debugWireframe.lua", renderWareBuilder.DebugView.Wireframe);
-            File.WriteAllText("debugVertices.lua", renderWareBuilder.DebugView.Vertices);
+            var debugView = new MtaDebugView(renderWareBuilder);
+            File.WriteAllText("debugWireframe.lua", debugView.Wireframe);
+            File.WriteAllText("debugVertices.lua", debugView.Vertices);
         }
 
         static void Main(string[] args)

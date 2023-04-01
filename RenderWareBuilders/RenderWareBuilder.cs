@@ -5,6 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("RenderWareIo.Mta")]
 
 namespace RenderWareBuilders
 {
@@ -16,8 +19,6 @@ namespace RenderWareBuilders
         internal readonly List<Material> materials;
         internal readonly Dictionary<string, MaterialId> materialCollisionMaterialIds;
 
-        public DebugView DebugView { get; }
-
         public RenderWareBuilder()
         {
             this.vertices = new List<Vertex>();
@@ -25,7 +26,6 @@ namespace RenderWareBuilders
             this.triangles = new List<Triangle>();
             this.materials = new List<Material>();
             this.materialCollisionMaterialIds = new Dictionary<string, MaterialId>();
-            this.DebugView = new DebugView(this);
         }
 
         public void SetMaterialCollisionMaterialId(string material, MaterialId materialId)

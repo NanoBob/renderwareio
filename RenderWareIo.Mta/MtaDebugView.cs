@@ -1,13 +1,15 @@
-﻿using System.Linq;
+﻿using RenderWareBuilders;
+using System;
+using System.Linq;
 using System.Text;
 
-namespace RenderWareBuilders
+namespace RenderWareIo.Mta
 {
-    public class DebugView
+    public class MtaDebugView
     {
         private readonly RenderWareBuilder renderWareBuilder;
 
-        internal DebugView(RenderWareBuilder renderWareBuilder)
+        public MtaDebugView(RenderWareBuilder renderWareBuilder)
         {
             this.renderWareBuilder = renderWareBuilder;
         }
@@ -64,7 +66,7 @@ namespace RenderWareBuilders
                     sb.AppendLine("\tlocal lineWidth = lineWidth or 2");
                     sb.AppendLine("\tlocal lineColor = lineColor or tocolor(255,255,255,255)");
                     sb.AppendLine("\tlocal vertices = {");
-                    if(renderWareBuilder.vertices.Any())
+                    if (renderWareBuilder.vertices.Any())
                     {
                         foreach (var vertex in renderWareBuilder.vertices)
                         {

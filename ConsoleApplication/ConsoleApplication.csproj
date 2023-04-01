@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RenderWareBuilders\RenderWareBuilders.csproj" />
+    <ProjectReference Include="..\RenderWareIo.Mta\RenderWareIo.Mta.csproj" />
     <ProjectReference Include="..\RenderWareIo\RenderWareIo.csproj" />
   </ItemGroup>
 
