@@ -30,7 +30,7 @@ namespace RenderWareBuilders
             return vertex;
         }
         
-        public Vertex AddVertex(PrelitVertex vertex)
+        public Vertex AddPrelitVertex(PrelitVertex vertex)
         {
             vertex.Index = (ushort)this.prelitVertices.Count;
             this.prelitVertices.Add(vertex);

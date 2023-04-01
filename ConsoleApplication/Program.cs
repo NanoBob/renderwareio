@@ -771,7 +771,7 @@ namespace ConsoleApplication
             };
             renderWareBuilder.AddTriangle(new RenderWareBuilders.Triangle
             {
-                Vertex1 = renderWareBuilder.AddVertex(new RenderWareBuilders.PrelitVertex
+                Vertex1 = renderWareBuilder.AddPrelitVertex(new RenderWareBuilders.PrelitVertex
                 {
                     Position = new Vector3(0, 0, 0),
                     Normal = Vector3.UnitZ,
@@ -779,7 +779,7 @@ namespace ConsoleApplication
                     Day = System.Drawing.Color.Red,
                     Night = System.Drawing.Color.Blue,
                 }),
-                Vertex2 = renderWareBuilder.AddVertex(new RenderWareBuilders.PrelitVertex
+                Vertex2 = renderWareBuilder.AddPrelitVertex(new RenderWareBuilders.PrelitVertex
                 {
                     Position = new Vector3(0, 5, 0),
                     Normal = Vector3.UnitZ,
@@ -787,7 +787,7 @@ namespace ConsoleApplication
                     Day = System.Drawing.Color.Red,
                     Night = System.Drawing.Color.Blue,
                 }),
-                Vertex3 = renderWareBuilder.AddVertex(new RenderWareBuilders.PrelitVertex
+                Vertex3 = renderWareBuilder.AddPrelitVertex(new RenderWareBuilders.PrelitVertex
                 {
                     Position = new Vector3(5, 0, 0),
                     Normal = Vector3.UnitZ,
@@ -799,7 +799,7 @@ namespace ConsoleApplication
             });
             renderWareBuilder.AddTriangle(new RenderWareBuilders.Triangle
             {
-                Vertex1 = renderWareBuilder.AddVertex(new RenderWareBuilders.PrelitVertex
+                Vertex1 = renderWareBuilder.AddPrelitVertex(new RenderWareBuilders.PrelitVertex
                 {
                     Position = new Vector3(5, 0, 0),
                     Normal = Vector3.UnitZ,
@@ -807,7 +807,7 @@ namespace ConsoleApplication
                     Day = System.Drawing.Color.Red,
                     Night = System.Drawing.Color.Blue,
                 }),
-                Vertex2 = renderWareBuilder.AddVertex(new RenderWareBuilders.PrelitVertex
+                Vertex2 = renderWareBuilder.AddPrelitVertex(new RenderWareBuilders.PrelitVertex
                 {
                     Position = new Vector3(0, 5, 0),
                     Normal = Vector3.UnitZ,
@@ -815,7 +815,7 @@ namespace ConsoleApplication
                     Day = System.Drawing.Color.Red,
                     Night = System.Drawing.Color.Blue,
                 }),
-                Vertex3 = renderWareBuilder.AddVertex(new RenderWareBuilders.PrelitVertex
+                Vertex3 = renderWareBuilder.AddPrelitVertex(new RenderWareBuilders.PrelitVertex
                 {
                     Position = new Vector3(5, 5, 0),
                     Normal = Vector3.UnitZ,
