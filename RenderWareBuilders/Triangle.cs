@@ -7,7 +7,7 @@ namespace RenderWareBuilders
 {
     public class Triangle
     {
-        internal ushort Index { get; set; }
+        public ushort Index { get; internal set; }
         public Vertex Vertex1 { get; set; }
         public Vertex Vertex2 { get; set; }
         public Vertex Vertex3 { get; set; }

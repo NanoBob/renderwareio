@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 
 namespace RenderWareBuilders
 {
@@ -15,6 +16,10 @@ namespace RenderWareBuilders
         private readonly List<Triangle> triangles;
         private readonly List<Material> materials;
         private readonly Dictionary<string, MaterialId> materialCollisionMaterialIds;
+
+        public IReadOnlyCollection<Vertex> Vertices => vertices.AsReadOnly();
+        public IReadOnlyCollection<PrelitVertex> PrelitVertices => prelitVertices.AsReadOnly();
+        public IReadOnlyCollection<Triangle> Triangles => triangles.AsReadOnly();
 
         public RenderWareBuilder()
         {

@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<Version>0.1.0</Version>
+		<Authors>CrosRoad95</Authors>
+		<Company></Company>
+		<Product>Renderware IO builders for MTA:SA</Product>
+		<PackageProjectUrl>https://github.com/nanobob/renderwareio</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/nanobob/renderwareio</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<Description>Renderware IO builder library for MTA:SA</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\RenderWareIo\RenderWareIo.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+    <ProjectReference Include="..\RenderWareBuilders\RenderWareBuilders.csproj" />
+  </ItemGroup>
+
+</Project>
