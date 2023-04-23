@@ -990,8 +990,8 @@ namespace ConsoleApplication
                 var byteArray = StreamToByteArray(stream);
                 File.WriteAllBytes($"{fileName}.dff", byteArray);
             }
-            convertModel("cube.obj");
-            convertModel("monkey.obj");
+            convertModel("cube.oobj");
+            convertModel("monkey.oobj");
         }
 
         static void Main(string[] args)
