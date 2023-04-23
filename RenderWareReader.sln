@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApplication", "Conso
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RenderWareBuilders", "RenderWareBuilders\RenderWareBuilders.csproj", "{AB1540D1-6171-4E59-832E-0E7E019A4CB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenderWareIo.Mta", "RenderWareIo.Mta\RenderWareIo.Mta.csproj", "{1399FFBC-26D7-47A5-AA9F-2A0A2EB20DB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RenderWareIo.Mta", "RenderWareIo.Mta\RenderWareIo.Mta.csproj", "{1399FFBC-26D7-47A5-AA9F-2A0A2EB20DB6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Converters", "Converters", "{B88AD19E-984C-40D2-A9C0-8A05DAFE6674}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RenderWareIo.Converters.WavefrontConverter", "RenderWareIo.Converters.WavefrontLoader\RenderWareIo.Converters.WavefrontConverter.csproj", "{7F229EC9-3E84-45B3-9FCA-0F1486AF3E2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +37,16 @@ Global
 		{1399FFBC-26D7-47A5-AA9F-2A0A2EB20DB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1399FFBC-26D7-47A5-AA9F-2A0A2EB20DB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1399FFBC-26D7-47A5-AA9F-2A0A2EB20DB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F229EC9-3E84-45B3-9FCA-0F1486AF3E2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F229EC9-3E84-45B3-9FCA-0F1486AF3E2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F229EC9-3E84-45B3-9FCA-0F1486AF3E2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F229EC9-3E84-45B3-9FCA-0F1486AF3E2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7F229EC9-3E84-45B3-9FCA-0F1486AF3E2D} = {B88AD19E-984C-40D2-A9C0-8A05DAFE6674}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FBF4F0B0-D4BD-4447-B915-A4D5455A5F68}

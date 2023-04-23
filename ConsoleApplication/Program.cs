@@ -14,6 +14,7 @@ using System.Linq;
 using System.Numerics;
 using Sphere = RenderWareIo.Structs.Col.Sphere;
 using Texture = RenderWareIo.Structs.Dff.Texture;
+using RenderWareIo.Converters.WavefrontConverter;
 
 namespace ConsoleApplication
 {
@@ -977,6 +978,22 @@ namespace ConsoleApplication
             File.WriteAllText("debugVertices.lua", debugView.Vertices);
         }
 
+        private static void ConvertObj()
+        {
+            void convertModel(string fileName)
+            {
+                using var inputFileStream = File.OpenRead(fileName);
+                var dff = WavefrontConverter.Convert(inputFileStream);
+                using var stream = new MemoryStream();
+                dff.Write(stream);
+                stream.Position = 0;
+                var byteArray = StreamToByteArray(stream);
+                File.WriteAllBytes($"{fileName}.dff", byteArray);
+            }
+            convertModel("cube.obj");
+            convertModel("monkey.obj");
+        }
+
         static void Main(string[] args)
         {
             //ImgTest();
@@ -1044,7 +1061,8 @@ namespace ConsoleApplication
             //CarIdeFileTest();
             //PrelitModel();
             //CollisionMaterial();
-            DebugViewTest();
+            //DebugViewTest();
+            ConvertObj();
         }
     }
 }
