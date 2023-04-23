@@ -14,10 +14,23 @@
   <ItemGroup>
     <ProjectReference Include="..\RenderWareBuilders\RenderWareBuilders.csproj" />
     <ProjectReference Include="..\RenderWareIo.Mta\RenderWareIo.Mta.csproj" />
+    <ProjectReference Include="..\RenderWareIo.Converters.WavefrontLoader\RenderWareIo.Converters.WavefrontConverter.csproj" />
     <ProjectReference Include="..\RenderWareIo\RenderWareIo.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="cone.mtl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="cone.obj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="cube.mtl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="cube.obj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="files\1x3.col">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -112,6 +125,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="files\testunlocked.dff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="monkey.mtl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="monkey.obj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
