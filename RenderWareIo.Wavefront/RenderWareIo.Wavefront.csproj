@@ -14,12 +14,19 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="CjClutter.ObjLoader" Version="1.0.0" />
+		<PackageReference Include="CjClutter.ObjLoader" Version="1.0.0" />
 	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\RenderWareBuilders\RenderWareBuilders.csproj" />
-    <ProjectReference Include="..\RenderWareIo\RenderWareIo.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\RenderWareBuilders\RenderWareBuilders.csproj" />
+		<ProjectReference Include="..\RenderWareIo\RenderWareIo.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
 
 </Project>
