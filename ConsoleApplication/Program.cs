@@ -88,7 +88,20 @@ namespace ConsoleApplication
             //PrelitModel();
             //CollisionMaterial();
             //DebugViewTest();
-            WavefrontTests();
+            //WavefrontTests();
+            TxdBuilderTexts();
+        }
+
+        private static void TxdBuilderTexts()
+        {
+            var files = Directory.GetFiles("files", "*.png");
+            var txdBuilder = new RenderWareBuilders.TxdBuilder();
+            foreach (var file in files)
+            {
+                txdBuilder.AddImage(Path.GetFileNameWithoutExtension(file), file);
+            }
+            var txd = txdBuilder.Build();
+            txd.SaveAs("out");
         }
 
         private static void WavefrontTests()
@@ -1096,7 +1109,11 @@ public static class DffExtensions
         stream.Position = 0;
         var byteArray = StreamToByteArray(stream);
         if (!Directory.Exists(Path.GetDirectoryName(name)))
-            Directory.CreateDirectory(Path.GetDirectoryName(name));
+        {
+            var directory = Path.GetDirectoryName(name);
+            if (!string.IsNullOrEmpty(directory))
+                Directory.CreateDirectory(Path.GetDirectoryName(name));
+        }
 
         File.WriteAllBytes($"{name}.dff", byteArray);
     }
@@ -1108,9 +1125,29 @@ public static class DffExtensions
         stream.Position = 0;
         var byteArray = StreamToByteArray(stream);
         if (!Directory.Exists(Path.GetDirectoryName(name)))
-            Directory.CreateDirectory(Path.GetDirectoryName(name));
+        {
+            var directory = Path.GetDirectoryName(name);
+            if (!string.IsNullOrEmpty(directory))
+                Directory.CreateDirectory(Path.GetDirectoryName(name));
+        }
 
         File.WriteAllBytes($"{name}.col", byteArray);
+    }
+    
+    public static void SaveAs(this Txd dff, string name)
+    {
+        using var stream = new MemoryStream();
+        dff.Write(stream);
+        stream.Position = 0;
+        var byteArray = StreamToByteArray(stream);
+        if (!Directory.Exists(Path.GetDirectoryName(name)))
+        {
+            var directory = Path.GetDirectoryName(name);
+            if (!string.IsNullOrEmpty(directory))
+                Directory.CreateDirectory(Path.GetDirectoryName(name));
+        }
+
+        File.WriteAllBytes($"{name}.txd", byteArray);
     }
 
     public static byte[] StreamToByteArray(Stream input)
