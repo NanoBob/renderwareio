@@ -219,7 +219,7 @@ namespace RenderWareBuilders
                                         A = triangle.Vertex1.Index,
                                         B = triangle.Vertex2.Index,
                                         C = triangle.Vertex3.Index,
-                                        Light = 0,
+                                        Light = 15,
                                         Material = materialId
                                     };
                                 })

@@ -18,6 +18,21 @@ namespace RenderWareIo.Wavefront
         public Dictionary<string, MaterialId> CollisionMaterials { get; set; }
     }
 
+    internal class MaterialStreamProvider : IMaterialStreamProvider
+    {
+        private readonly string basePath;
+
+        public MaterialStreamProvider(string basePath)
+        {
+            this.basePath = basePath;
+        }
+
+        public Stream Open(string materialFilePath)
+        {
+            return File.Open(Path.Combine(basePath, materialFilePath), FileMode.Open, FileAccess.Read);
+        }
+    }
+
     public class WavefrontLoader : IDisposable
     {
         private readonly FileStream fileStream;
@@ -27,7 +42,7 @@ namespace RenderWareIo.Wavefront
         public WavefrontLoader(string fileName)
         {
             this.fileStream = File.OpenRead(fileName);
-            this.objLoader = new ObjLoaderFactory().Create();
+            this.objLoader = new ObjLoaderFactory().Create(new MaterialStreamProvider(Path.GetDirectoryName(fileName)));
             this.loadResult = objLoader.Load(fileStream);
         }
 
@@ -64,7 +79,7 @@ namespace RenderWareIo.Wavefront
                     material = new RenderWareBuilders.Material
                     {
                         Name = textureMap,
-                        Color = color,
+                        Color = color
                     };
                     renderWareBuilder.AddMaterial(material);
                 }

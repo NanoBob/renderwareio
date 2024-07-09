@@ -93,24 +93,38 @@ namespace ConsoleApplication
 
         private static void WavefrontTests()
         {
-            var wavefrontLoader = new RenderWareIo.Wavefront.WavefrontLoader("sample.obj");
+            ConvertObjFolder("files");
+        }
+
+        private static void ConvertObjFolder(string path)
+        {
+            var files = Directory.GetFiles(path, "*.obj");
+            foreach (var file in files)
+            {
+                ConvertModel(Path.Combine(path, Path.GetFileNameWithoutExtension(file)));
+            }
+        }
+
+        private static void ConvertModel(string name)
+        {
+            var wavefrontLoader = new RenderWareIo.Wavefront.WavefrontLoader($"{name}.obj");
             var groups = wavefrontLoader.GetAllGroups();
 
             var options = new RenderWareIo.Wavefront.WavefrontLoaderOptions
             {
                 DayNightColor = new RenderWareBuilders.DayNightColors
                 {
-                    day = System.Drawing.Color.FromArgb(120, 120, 120),
-                    night = System.Drawing.Color.FromArgb(40, 40, 40),
+                    day = System.Drawing.Color.FromArgb(100, 100, 100),
+                    night = System.Drawing.Color.FromArgb(45, 45, 45),
                 },
                 CollisionMaterials = groups.ToDictionary(wavefrontLoader.GetGroupTextureName, y => MaterialId.WoodBench)
             };
 
             var dff = wavefrontLoader.CreateDff(groups, options);
             var col = wavefrontLoader.CreateCol(groups, options);
-            dff.SaveAs("out/sample");
-            col.SaveAs("out/sample");
-            Console.WriteLine($"Sample model converted and saved in {Directory.GetCurrentDirectory()}");
+            dff.SaveAs($"out/{name}");
+            col.SaveAs($"out/{name}");
+            Console.WriteLine($"{name} file converted");
         }
 
         private static void ColTest()
