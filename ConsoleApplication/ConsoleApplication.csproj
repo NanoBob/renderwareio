@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\RenderWareBuilders\RenderWareBuilders.csproj" />
     <ProjectReference Include="..\RenderWareIo.Mta\RenderWareIo.Mta.csproj" />
+    <ProjectReference Include="..\RenderWareIo.Wavefront\RenderWareIo.Wavefront.csproj" />
     <ProjectReference Include="..\RenderWareIo\RenderWareIo.csproj" />
   </ItemGroup>
 
@@ -113,6 +114,12 @@
     </None>
     <None Update="files\testunlocked.dff">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="sample.mtl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="sample.obj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

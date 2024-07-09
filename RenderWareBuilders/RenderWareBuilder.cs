@@ -9,6 +9,12 @@ using System.Runtime.CompilerServices;
 
 namespace RenderWareBuilders
 {
+    public struct DayNightColors
+    {
+        public System.Drawing.Color day;
+        public System.Drawing.Color night;
+    }
+
     public class RenderWareBuilder
     {
         private readonly List<Vertex> vertices;
@@ -182,6 +188,7 @@ namespace RenderWareBuilders
 
         public Col BuildCol()
         {
+            var vertices = this.vertices.Count > 0 ? this.vertices : (IEnumerable<Vertex>)this.prelitVertices;
             return new Col
             {
                 ColCombos = new List<ColCombo>()
@@ -193,7 +200,7 @@ namespace RenderWareBuilders
                         {
                             Spheres = new List<RenderWareIo.Structs.Col.Sphere>(),
                             Boxes = new List<Box>(),
-                            Vertices = this.vertices
+                            Vertices = vertices
                                 .Select(vertex => new RenderWareIo.Structs.Col.Vertex()
                                 {
                                     FirstFloat = vertex.Position.X,

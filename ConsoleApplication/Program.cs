@@ -19,6 +19,100 @@ namespace ConsoleApplication
 {
     class Program
     {
+
+        static void Main(string[] args)
+        {
+            //ImgTest();
+            //TxdTest();
+            //BinaryIplTest();
+            //ImgDffTest();
+            //var files = Directory.GetFiles(@"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\Vessels", "*.dff");
+            //foreach (var file in files)
+            //{ 
+            //    CreateColForDff(file);
+            //}
+            //CreateColForDff(@"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\Gates\Milkyway\Innerring.dff");
+            //CreateColForDff(@"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\Dhd\dhdstripped.dff");
+            //DffTest("./files/3x3.dff");
+            //GenerateDff();
+            //ImgBinaryIplTest();
+            //DffTest();
+            //GenerateTxd();
+            //DffTest(@"C:\Users\Bobva\Downloads\bob.dff");
+            //DffTest(@"C:\Users\Bobva\Downloads\generated.dff");
+            //FindHighLodDistances(@"E:\Game Library\steamapps\common\Grand Theft Auto San Andreas");
+            //CreateColForDff("");
+            //ExportImg(
+            //    @"C:\Users\Bobva\Downloads\GTA_Amazing_Stargate\GTA Amazing Stargate\models\stargate.img",
+            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\stargate");
+            //ExportImg(
+            //    @"C:\Users\Bobva\Downloads\GTA_Amazing_Stargate\GTA Amazing Stargate\stargate\sgc\Level21.img",
+            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\sgc\Level21");
+            //ExportImg(
+            //    @"C:\Users\Bobva\Downloads\GTA_Amazing_Stargate\GTA Amazing Stargate\stargate\sgc\Level22.img",
+            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\sgc\Level22");
+            //ExportImg(
+            //    @"C:\Users\Bobva\Downloads\GTA_Amazing_Stargate\GTA Amazing Stargate\stargate\sgc\Level23.img",
+            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\sgc\Level23");
+            //ExportImg(
+            //    @"C:\Users\Bobva\Downloads\GTA_Amazing_Stargate\GTA Amazing Stargate\stargate\sgc\Level24.img",
+            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\sgc\Level24");
+            //ExportImg(
+            //    @"C:\Users\Bobva\Downloads\GTA_Amazing_Stargate\GTA Amazing Stargate\stargate\sgc\Level25.img",
+            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\sgc\Level25");
+            //ExportImg(
+            //    @"C:\Users\Bobva\Downloads\GTA_Amazing_Stargate\GTA Amazing Stargate\stargate\sgc\Level27-28.img",
+            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\sgc\Level27-28");
+            //ExportImg(
+            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\planets\abydos.img",
+            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\planets");
+            //ExportImg(
+            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\planets\Planets.img",
+            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\planets");
+            //ExportImg(
+            //    @"C:\Program Files (x86)\Rockstar Games\GTA San AndreasAtlantis\models\Atlantis.img",
+            //    @"C:\Program Files (x86)\Rockstar Games\GTA San AndreasAtlantis\models\Atlantis");
+            //ExportImg(
+            //    @"C:\Program Files (x86)\Rockstar Games\GTA San AndreasAtlantis\models\Mainland.img",
+            //    @"C:\Program Files (x86)\Rockstar Games\GTA San AndreasAtlantis\models\Mainland");
+
+            //BinMeshTest(@"D:\code\Unity\Project Abydos\Assets\Game\Models\SGC\Level27-28\lab_telephone3.dff");
+            //GroupColTest(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta3.img", "countn2_20.col");
+            //ScanColsFor(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta3.img", "des_ufoinn");
+            //ScanColsFor(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta_int.img", "pinetree05");
+            //Console.WriteLine("Press any key to quit...");
+
+            //WeaponIdeFileTest();
+            //WeaponDatFileTest();
+            //CarIdeFileTest();
+            //PrelitModel();
+            //CollisionMaterial();
+            //DebugViewTest();
+            WavefrontTests();
+        }
+
+        private static void WavefrontTests()
+        {
+            var wavefrontLoader = new RenderWareIo.Wavefront.WavefrontLoader("sample.obj");
+            var groups = wavefrontLoader.GetAllGroups();
+
+            var options = new RenderWareIo.Wavefront.WavefrontLoaderOptions
+            {
+                DayNightColor = new RenderWareBuilders.DayNightColors
+                {
+                    day = System.Drawing.Color.FromArgb(120, 120, 120),
+                    night = System.Drawing.Color.FromArgb(40, 40, 40),
+                },
+                CollisionMaterials = groups.ToDictionary(wavefrontLoader.GetGroupTextureName, y => MaterialId.WoodBench)
+            };
+
+            var dff = wavefrontLoader.CreateDff(groups, options);
+            var col = wavefrontLoader.CreateCol(groups, options);
+            dff.SaveAs("out/sample");
+            col.SaveAs("out/sample");
+            Console.WriteLine($"Sample model converted and saved in {Directory.GetCurrentDirectory()}");
+        }
+
         private static void ColTest()
         {
             new ColFile("./files/elevator.col").Write("./files/newelevator.col");
@@ -976,75 +1070,41 @@ namespace ConsoleApplication
             File.WriteAllText("debugWireframe.lua", debugView.Wireframe);
             File.WriteAllText("debugVertices.lua", debugView.Vertices);
         }
+    }
+}
 
-        static void Main(string[] args)
+public static class DffExtensions
+{
+    public static void SaveAs(this Dff dff, string name)
+    {
+        using var stream = new MemoryStream();
+        dff.Write(stream);
+        stream.Position = 0;
+        var byteArray = StreamToByteArray(stream);
+        if (!Directory.Exists(Path.GetDirectoryName(name)))
+            Directory.CreateDirectory(Path.GetDirectoryName(name));
+
+        File.WriteAllBytes($"{name}.dff", byteArray);
+    }
+    
+    public static void SaveAs(this Col dff, string name)
+    {
+        using var stream = new MemoryStream();
+        dff.Write(stream);
+        stream.Position = 0;
+        var byteArray = StreamToByteArray(stream);
+        if (!Directory.Exists(Path.GetDirectoryName(name)))
+            Directory.CreateDirectory(Path.GetDirectoryName(name));
+
+        File.WriteAllBytes($"{name}.col", byteArray);
+    }
+
+    public static byte[] StreamToByteArray(Stream input)
+    {
+        using (var memoryStream = new MemoryStream())
         {
-            //ImgTest();
-            //TxdTest();
-            //BinaryIplTest();
-            //ImgDffTest();
-            //var files = Directory.GetFiles(@"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\Vessels", "*.dff");
-            //foreach (var file in files)
-            //{ 
-            //    CreateColForDff(file);
-            //}
-            //CreateColForDff(@"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\Gates\Milkyway\Innerring.dff");
-            //CreateColForDff(@"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\Dhd\dhdstripped.dff");
-            //DffTest("./files/3x3.dff");
-            //GenerateDff();
-            //ImgBinaryIplTest();
-            //DffTest();
-            //GenerateTxd();
-            //DffTest(@"C:\Users\Bobva\Downloads\bob.dff");
-            //DffTest(@"C:\Users\Bobva\Downloads\generated.dff");
-            //FindHighLodDistances(@"E:\Game Library\steamapps\common\Grand Theft Auto San Andreas");
-            //CreateColForDff("");
-            //ExportImg(
-            //    @"C:\Users\Bobva\Downloads\GTA_Amazing_Stargate\GTA Amazing Stargate\models\stargate.img",
-            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\stargate");
-            //ExportImg(
-            //    @"C:\Users\Bobva\Downloads\GTA_Amazing_Stargate\GTA Amazing Stargate\stargate\sgc\Level21.img",
-            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\sgc\Level21");
-            //ExportImg(
-            //    @"C:\Users\Bobva\Downloads\GTA_Amazing_Stargate\GTA Amazing Stargate\stargate\sgc\Level22.img",
-            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\sgc\Level22");
-            //ExportImg(
-            //    @"C:\Users\Bobva\Downloads\GTA_Amazing_Stargate\GTA Amazing Stargate\stargate\sgc\Level23.img",
-            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\sgc\Level23");
-            //ExportImg(
-            //    @"C:\Users\Bobva\Downloads\GTA_Amazing_Stargate\GTA Amazing Stargate\stargate\sgc\Level24.img",
-            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\sgc\Level24");
-            //ExportImg(
-            //    @"C:\Users\Bobva\Downloads\GTA_Amazing_Stargate\GTA Amazing Stargate\stargate\sgc\Level25.img",
-            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\sgc\Level25");
-            //ExportImg(
-            //    @"C:\Users\Bobva\Downloads\GTA_Amazing_Stargate\GTA Amazing Stargate\stargate\sgc\Level27-28.img",
-            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\sgc\Level27-28");
-            //ExportImg(
-            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\planets\abydos.img",
-            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\planets");
-            //ExportImg(
-            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\planets\Planets.img",
-            //    @"C:\Program Files (x86)\MTA San Andreas 1.5\server\mods\deathmatch\resources\[slipe]\stargate\Assets\Mods\AmazingStargate\planets");
-            //ExportImg(
-            //    @"C:\Program Files (x86)\Rockstar Games\GTA San AndreasAtlantis\models\Atlantis.img",
-            //    @"C:\Program Files (x86)\Rockstar Games\GTA San AndreasAtlantis\models\Atlantis");
-            //ExportImg(
-            //    @"C:\Program Files (x86)\Rockstar Games\GTA San AndreasAtlantis\models\Mainland.img",
-            //    @"C:\Program Files (x86)\Rockstar Games\GTA San AndreasAtlantis\models\Mainland");
-
-            //BinMeshTest(@"D:\code\Unity\Project Abydos\Assets\Game\Models\SGC\Level27-28\lab_telephone3.dff");
-            //GroupColTest(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta3.img", "countn2_20.col");
-            //ScanColsFor(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta3.img", "des_ufoinn");
-            //ScanColsFor(@"D:\SteamLibrary\steamapps\common\Grand Theft Auto San Andreas Server\models\gta_int.img", "pinetree05");
-            //Console.WriteLine("Press any key to quit...");
-
-            //WeaponIdeFileTest();
-            //WeaponDatFileTest();
-            //CarIdeFileTest();
-            //PrelitModel();
-            //CollisionMaterial();
-            DebugViewTest();
+            input.CopyTo(memoryStream);
+            return memoryStream.ToArray();
         }
     }
 }
