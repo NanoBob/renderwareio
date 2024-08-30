@@ -1,19 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<Version>0.1.0</Version>
 		<Authors>CrosRoad95</Authors>
 		<Company></Company>
-		<Product>Renderware IO builders for MTA:SA</Product>
+		<Product>Renderware IO Wavefront support</Product>
 		<PackageProjectUrl>https://github.com/nanobob/renderwareio</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/nanobob/renderwareio</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
-		<Description>Renderware IO builder library for MTA:SA</Description>
+		<Description>Renderware IO Wavefront support</Description>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="CjClutter.ObjLoader" Version="1.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\RenderWareBuilders\RenderWareBuilders.csproj" />
 		<ProjectReference Include="..\RenderWareIo\RenderWareIo.csproj" />
 	</ItemGroup>
 
@@ -23,9 +28,5 @@
 			<PackagePath></PackagePath>
 		</None>
 	</ItemGroup>
-
-	<ItemGroup>
-    <ProjectReference Include="..\RenderWareBuilders\RenderWareBuilders.csproj" />
-  </ItemGroup>
 
 </Project>
