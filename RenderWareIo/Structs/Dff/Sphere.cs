@@ -12,11 +12,9 @@ namespace RenderWareIo.Structs.Dff
     {
         public Vector3 Position { get; set; }
         public float Radius { get; set; }
-        public int HasPosition { get; set; }
-        public int HasNormals { get; set; }
 
 
-        public uint ContentByteCount => 24;
+        public uint ContentByteCount => 16;
         public uint ByteCount => ContentByteCount;
         public uint ByteCountWithHeader => ByteCount;
 
@@ -24,16 +22,12 @@ namespace RenderWareIo.Structs.Dff
         {
             this.Position = Vector3.Zero;
             this.Radius = 1;
-            this.HasPosition = 1;
-            this.HasNormals = 0;
         }
 
         public Sphere Read(Stream stream)
         {
             this.Position = RenderWareFileHelper.ReadVector(stream);
             this.Radius = RenderWareFileHelper.ReadFloat(stream);
-            this.HasPosition = (int)RenderWareFileHelper.ReadUint32(stream);
-            this.HasNormals = (int)RenderWareFileHelper.ReadUint32(stream);
 
             return this;
         }
@@ -42,8 +36,6 @@ namespace RenderWareIo.Structs.Dff
         {
             RenderWareFileHelper.WriteVector(stream, this.Position);
             RenderWareFileHelper.WriteFloat(stream, this.Radius);
-            RenderWareFileHelper.WriteUint32(stream, (uint)this.HasPosition);
-            RenderWareFileHelper.WriteUint32(stream, (uint)this.HasNormals);
         }
     }
 }

@@ -4,6 +4,7 @@ using RenderWareIo.Mta;
 using RenderWareIo.Structs.BinaryIpl;
 using RenderWareIo.Structs.Col;
 using RenderWareIo.Structs.Dff;
+using RenderWareIo.Structs.Dff.Plugins;
 using RenderWareIo.Structs.Ide;
 using RenderWareIo.Structs.Ipl;
 using RenderWareIo.Structs.Txd;
@@ -586,7 +587,7 @@ namespace ConsoleApplication
             dff.Clump.FrameList.Frames.Add(new Frame());
             dff.Clump.FrameList.Extensions.Add(new Extension()
             {
-                Data = buffer
+                Data = buffer.ToList()
             });
 
             dff.Clump.Atomics.Add(new Atomic()
@@ -977,6 +978,150 @@ namespace ConsoleApplication
             File.WriteAllText("debugVertices.lua", debugView.Vertices);
         }
 
+        static void EqualityTest(string input, string output = "files/output-old.dff")
+        {
+            var parsed = new DffFile(input);
+            parsed.Write(output);
+
+            var inputBuffer = File.ReadAllBytes(input);
+            var outputBuffer = File.ReadAllBytes(output);
+
+            var lengthMismatch = false;
+            for (int i = 0; i < inputBuffer.Length; i++)
+            {
+                if (inputBuffer[i] != outputBuffer[i])
+                {
+                    if (i >= 4 && i < 8)
+                        lengthMismatch = true;
+                    else
+                        throw new Exception($"Files do not match at {i}. Length mismatch: {lengthMismatch}");
+                }
+            }
+
+            Console.WriteLine("Files match.");
+
+        }
+
+        static void RecreateTest(string input, string output = "files/recreated-old.dff")
+        {
+            var parsed = new DffFile(input);
+
+            var builder = new RenderWareBuilders.RenderWareBuilder();
+
+            var vertices = parsed.Dff.Clump.GeometryList.Geometries.SelectMany(x => x.MorphTargets).SelectMany(x => x.Vertices).ToArray();
+            var normals = parsed.Dff.Clump.GeometryList.Geometries.SelectMany(x => x.MorphTargets).SelectMany(x => x.Normals).ToArray();
+            var uvs = parsed.Dff.Clump.GeometryList.Geometries.SelectMany(x => x.TexCoords).ToArray();
+            var colors = parsed.Dff.Clump.GeometryList.Geometries.SelectMany(x => x.Colors).ToArray();
+
+            var vertexArray = new RenderWareBuilders.Vertex[vertices.Length];
+            for (int i = 0; i < vertices.Count(); i++)
+            {
+                vertexArray[i] = builder.AddVertex(vertices[i], normals.Length > i ? normals[i] : null, new(uvs[i].X, uvs[i].Y));
+            }
+
+            var materials = parsed.Dff.Clump.GeometryList.Geometries
+                .SelectMany(x => x.MaterialList.Materials)
+                .Select(x => builder.AddMaterial(x.Texture.Name.Value, x.Texture.MaskName.Value, System.Drawing.Color.FromArgb(x.Color.A, x.Color.R, x.Color.G, x.Color.B)))
+                .ToArray();
+
+
+            foreach (var face in parsed.Dff.Clump.GeometryList.Geometries.SelectMany(x => x.Triangles))
+            {
+                builder.AddTriangle(new RenderWareBuilders.Triangle()
+                {
+                    Vertex1 = vertexArray[face.VertexIndexOne],
+                    Vertex2 = vertexArray[face.VertexIndexTwo],
+                    Vertex3 = vertexArray[face.VertexIndexThree],
+                    Material = materials[face.MaterialIndex]
+                });
+            }
+
+            var frameName = (parsed.Dff.Clump.FrameList.Extensions
+                .SelectMany(x => x.Extensions)
+                .First(x => x is FramePlugin) as FramePlugin)!.Value;
+
+            using var outputFile = File.OpenWrite(output);
+            builder.BuildDff(frameName, 0x66).Write(outputFile);
+            outputFile.Close();
+
+            var inputBuffer = File.ReadAllBytes(input);
+            var outputBuffer = File.ReadAllBytes(output);
+
+            var lengthMismatch = false;
+            for (int i = 0; i < inputBuffer.Length; i++)
+            {
+                if (inputBuffer[i] != outputBuffer[i])
+                {
+                    if (i >= 4 && i < 8)
+                        lengthMismatch = true;
+                    else
+                        throw new Exception($"Files do not match at {i}. Length mismatch: {lengthMismatch}");
+                }
+            }
+
+            Console.WriteLine("Files match.");
+
+        }
+
+        static void RecreateDirectory(string inputDirectory, string outputDirectory)
+        {
+            if (!Directory.Exists(outputDirectory))
+                Directory.CreateDirectory(outputDirectory);
+
+            foreach (var file in Directory.GetFiles(inputDirectory, "*.dff"))
+            {
+                try
+                {
+                    var input = file;
+                    var name = Path.GetFileName(input);
+                    var output = Path.Join(outputDirectory, name);
+
+                    var parsed = new DffFile(input);
+
+                    var builder = new RenderWareBuilders.RenderWareBuilder();
+
+                    var vertices = parsed.Dff.Clump.GeometryList.Geometries.SelectMany(x => x.MorphTargets).SelectMany(x => x.Vertices).ToArray();
+                    var normals = parsed.Dff.Clump.GeometryList.Geometries.SelectMany(x => x.MorphTargets).SelectMany(x => x.Normals).ToArray();
+                    var uvs = parsed.Dff.Clump.GeometryList.Geometries.SelectMany(x => x.TexCoords).ToArray();
+                    var colors = parsed.Dff.Clump.GeometryList.Geometries.SelectMany(x => x.Colors).ToArray();
+
+                    var vertexArray = new RenderWareBuilders.Vertex[vertices.Length];
+                    for (int i = 0; i < vertices.Count(); i++)
+                    {
+                        vertexArray[i] = builder.AddVertex(vertices[i], normals.Length > i ? normals[i] : null, new(uvs[i].X, uvs[i].Y));
+                    }
+
+                    var materials = parsed.Dff.Clump.GeometryList.Geometries
+                        .SelectMany(x => x.MaterialList.Materials)
+                        .Select(x => builder.AddMaterial(x.Texture.Name.Value, x.Texture.MaskName.Value, System.Drawing.Color.FromArgb(x.Color.A, x.Color.R, x.Color.G, x.Color.B)))
+                        .ToArray();
+
+
+                    foreach (var face in parsed.Dff.Clump.GeometryList.Geometries.SelectMany(x => x.Triangles))
+                    {
+                        builder.AddTriangle(new RenderWareBuilders.Triangle()
+                        {
+                            Vertex1 = vertexArray[face.VertexIndexOne],
+                            Vertex2 = vertexArray[face.VertexIndexTwo],
+                            Vertex3 = vertexArray[face.VertexIndexThree],
+                            Material = materials[face.MaterialIndex]
+                        });
+                    }
+
+                    var frameName = (parsed.Dff.Clump.FrameList.Extensions
+                        .SelectMany(x => x.Extensions)
+                        .First(x => x is FramePlugin) as FramePlugin)!.Value;
+
+                    using var outputFile = File.OpenWrite(output);
+                    builder.BuildDff(frameName.Trim('\0'), 0x66).Write(outputFile);
+                    outputFile.Close();
+                } catch (Exception e)
+                {
+                    Console.WriteLine($"Failed to process {file}");
+                }
+            }
+        }
+
         static void Main(string[] args)
         {
             //ImgTest();
@@ -1044,7 +1189,21 @@ namespace ConsoleApplication
             //CarIdeFileTest();
             //PrelitModel();
             //CollisionMaterial();
-            DebugViewTest();
+            //DebugViewTest();
+            //EqualityTest(
+            //    @"",
+            //    @"");
+            //RecreateTest(
+            //    @"",
+            //    @"");
+            //RecreateDirectory(
+            //    @"chunks",
+            //    @"chunks-recreated"
+            //);
+            RecreateDirectory(
+                @"C:\code\csharp\Attero\Attero.TerrainPreview\bin\Debug\net8.0-windows\porkdog-output\chunks",
+                @"C:\code\csharp\Attero\Attero.TerrainPreview\bin\Debug\net8.0-windows\porkdog-output\chunks-recreated"
+            );
         }
     }
 }

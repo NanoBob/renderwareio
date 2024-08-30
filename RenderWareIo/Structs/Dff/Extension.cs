@@ -1,12 +1,10 @@
 ﻿using RenderWareIo.ReadWriteHelpers;
 using RenderWareIo.Structs.Common;
+using RenderWareIo.Structs.Dff.Plugins;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Numerics;
-using System.Text;
 using System.Linq;
-using RenderWareIo.Structs.Dff.Plugins;
 
 namespace RenderWareIo.Structs.Dff
 {
@@ -20,22 +18,28 @@ namespace RenderWareIo.Structs.Dff
                 extension.Read(stream);
                 return extension;
             },
+            [0x0253F2FE] = (stream) =>
+            {
+                var extension = new FramePlugin();
+                extension.Read(stream);
+                return extension;
+            },
         };
 
         public ChunkHeader Header { get; set; }
-        public byte[] Data { get; set; }
-        public int Size => Data.Length;
+        public List<byte> Data { get; set; }
+        public int Size => Data.Count;
         public List<IExtensionPlugin> Extensions { get; set; }
 
 
-        public uint ContentByteCount => (uint)Size + (uint)Extensions.Sum(x => x.ByteCountWithHeader);
+        public uint ContentByteCount => (uint)(Size + Extensions.Sum(x => x.ByteCountWithHeader));
         public uint ByteCount => ContentByteCount;
         public uint ByteCountWithHeader => ByteCount + 12;
 
         public Extension()
         {
             this.Header = new ChunkHeader(3);
-            this.Data = new byte[0];
+            this.Data = new List<byte>();
             this.Extensions = new List<IExtensionPlugin>();
         }
 
@@ -44,7 +48,7 @@ namespace RenderWareIo.Structs.Dff
             if (stream.Position == stream.Length || stream.Position > stream.Length - 12)
             {
                 this.Header = new ChunkHeader(3);
-                this.Data = new byte[0];
+                this.Data = new List<byte>();
                 Console.WriteLine("Encountered stream end instead of dff extension");
                 return this;
             }
@@ -61,25 +65,23 @@ namespace RenderWareIo.Structs.Dff
                 return this;
             }
 
-            this.Data = new byte[this.Header.Size];
-            //for (int i = 0; i < this.Data.Length; i++)
-            //{
-            //    this.Data[i] = RenderWareFileHelper.ReadByte(stream);
-            //}
+            this.Data = new List<byte>();
             uint lengthLeft = this.Header.Size;
             while (lengthLeft > 0)
             {
                 ChunkHeader header = new ChunkHeader().Read(stream);
-                
+
                 if (ExtensionTypes.ContainsKey(header.Type))
                 {
                     stream.Position -= 12;
                     var plugin = ExtensionTypes[header.Type](stream);
                     this.Extensions.Add(plugin);
-                } else
+                }
+                else
                 {
-                    for (int i = 0; i < header.Size; i++)
-                        RenderWareFileHelper.ReadByte(stream);
+                    stream.Position -= 12;
+                    for (int i = 0; i < header.Size + 12; i++)
+                        this.Data.Add(RenderWareFileHelper.ReadByte(stream));
                 }
                 lengthLeft -= (header.Size + 12);
             }
@@ -92,13 +94,14 @@ namespace RenderWareIo.Structs.Dff
             this.Header.Size = ByteCount;
 
             this.Header.Write(stream);
-            foreach (byte dataByte in this.Data)
-            {
-                RenderWareFileHelper.WriteByte(stream, dataByte);
-            }
             foreach (IExtensionPlugin extensionPlugin in this.Extensions)
             {
                 extensionPlugin.Write(stream);
+            }
+
+            foreach (byte dataByte in this.Data)
+            {
+                RenderWareFileHelper.WriteByte(stream, dataByte);
             }
         }
 
@@ -107,7 +110,7 @@ namespace RenderWareIo.Structs.Dff
             return new Extension()
             {
                 Header = new ChunkHeader(3),
-                Data = new byte[0]
+                Data = new List<byte>()
             };
         }
     }

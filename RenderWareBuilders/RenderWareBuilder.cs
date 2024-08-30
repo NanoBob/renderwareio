@@ -49,7 +49,7 @@ namespace RenderWareBuilders
             return vertex;
         }
 
-        public Vertex AddVertex(Vector3 position, Vector3 normal, Vector2 uv) => AddVertex(new Vertex() { Position = position, Normal = normal, Uv = uv });
+        public Vertex AddVertex(Vector3 position, Vector3? normal, Vector2 uv) => AddVertex(new Vertex() { Position = position, Normal = normal, Uv = uv });
 
         public Triangle AddTriangle(Triangle triangle)
         {
@@ -75,13 +75,13 @@ namespace RenderWareBuilders
 
         public Material AddMaterial(string name, string maskName, System.Drawing.Color color) => AddMaterial(new Material() { Name = name, MaskName = maskName, Color = color });
 
-        public Dff BuildDff()
+        public Dff BuildDff(string frameName = "Model", uint flags = 0x76)
         {
             var dff = new Dff();
             var geometry = new Geometry();
             var morphTarget = new MorphTarget();
 
-            geometry.Flags = 0x76;
+            geometry.Flags = flags;
 
             foreach (var material in this.materials) 
             {
@@ -116,7 +116,8 @@ namespace RenderWareBuilders
                 foreach (var vertex in this.prelitVertices)
                 {
                     morphTarget.Vertices.Add(vertex.Position);
-                    morphTarget.Normals.Add(vertex.Normal);
+                    if (vertex.Normal != null)
+                        morphTarget.Normals.Add(vertex.Normal.Value);
                     geometry.TexCoords.Add(new Uv() { X = vertex.Uv.X, Y = vertex.Uv.Y });
                     geometry.Colors.Add(new Color(vertex.Day));
                 }
@@ -128,7 +129,8 @@ namespace RenderWareBuilders
                 foreach (var vertex in this.vertices)
                 {
                     morphTarget.Vertices.Add(vertex.Position);
-                    morphTarget.Normals.Add(vertex.Normal);
+                    if (vertex.Normal != null)
+                        morphTarget.Normals.Add(vertex.Normal.Value);
                     geometry.TexCoords.Add(new Uv() { X = vertex.Uv.X, Y = vertex.Uv.Y });
                 }
             }
@@ -156,19 +158,23 @@ namespace RenderWareBuilders
             }
 
             geometry.MorphTargets.Add(morphTarget);
+            geometry.MorphTargetCount = 1;
 
-            var frameName = "Model";
-            byte[] buffer = new byte[] { 0xfe, 0xf2, 0x53, 0x02, }
-                .Concat(BitConverter.GetBytes(frameName.Length % 4 == 0 ? (uint)frameName.Length : (uint)((frameName.Length / 4) + 1) * 4))
-                .Concat(new byte[] { 0xff, 0xff, 0x03, 0x18 })
-                .Concat(frameName.Select(c => (byte)c))
-                .Concat(new byte[4 - (frameName.Length % 4)])
-                .ToArray();
-
-            dff.Clump.FrameList.Frames.Add(new Frame());
+            dff.Clump.FrameList.Frames.Add(new Frame()
+            {
+                Rot1 = Vector3.UnitX,
+                Rot2 = Vector3.UnitY,
+                Rot3 = Vector3.UnitZ
+            });
             dff.Clump.FrameList.Extensions.Add(new Extension()
             {
-                Data = buffer
+                Extensions = new List<IExtensionPlugin>()
+                {
+                    new FramePlugin()
+                    {
+                        Value = frameName
+                    }
+                }
             });
             dff.Clump.Atomics.Add(new Atomic()
             {

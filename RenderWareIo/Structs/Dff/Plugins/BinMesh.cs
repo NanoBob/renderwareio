@@ -3,6 +3,7 @@ using RenderWareIo.Structs.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Numerics;
 using System.Text;
 
@@ -33,7 +34,8 @@ namespace RenderWareIo.Structs.Dff.Plugins
         public uint MeshCount { get; set; }
         public uint TotalIndexCount { get; set; }
 
-        public uint ContentByteCount => (uint)0;
+        public uint ContentByteCount => (uint)(4 + 4 + 4 + 
+            this.BinMeshStrips.Sum(x => 4 + 4 + x.IndexCount * 4));
         public uint ByteCount => ContentByteCount;
         public uint ByteCountWithHeader => ByteCount + 12;
 
@@ -76,7 +78,22 @@ namespace RenderWareIo.Structs.Dff.Plugins
 
         public void Write(Stream stream)
         {
+            this.Header.Write(stream);
+            RenderWareFileHelper.WriteUint32(stream, this.Flags);
+            RenderWareFileHelper.WriteUint32(stream, this.MeshCount);
+            RenderWareFileHelper.WriteUint32(stream, this.TotalIndexCount);
 
+            foreach (var binmesh in this.BinMeshStrips)
+            {
+                RenderWareFileHelper.WriteUint32(stream, binmesh.IndexCount);
+                RenderWareFileHelper.WriteUint32(stream, binmesh.MaterialIndex);
+
+                for (int j = 0; j < binmesh.IndexCount; j++)
+                {
+                    RenderWareFileHelper.WriteUint32(stream, binmesh.Indices[j]);
+                }
+            }
+           
         }
     }
 }

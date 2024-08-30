@@ -1,4 +1,5 @@
 ﻿using RenderWareIo.Structs.Dff;
+using RenderWareIo.Structs.Dff.Plugins;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -88,7 +89,7 @@ namespace RenderWareBuilders
                 vertex.Index = (ushort)morphTarget.Vertices.Count;
 
                 morphTarget.Vertices.Add(vertex.Position);
-                morphTarget.Normals.Add(vertex.Normal);
+                morphTarget.Normals.Add(vertex.Normal.Value);
                 geometry.TexCoords.Add(new Uv() { X = vertex.Uv.X, Y = vertex.Uv.Y });
             }
 
@@ -118,18 +119,17 @@ namespace RenderWareBuilders
 
             geometry.MorphTargets.Add(morphTarget);
 
-            var frameName = "Frame";
-            byte[] buffer = new byte[] { 0xfe, 0xf2, 0x53, 0x02, }
-                .Concat(BitConverter.GetBytes(frameName.Length % 4 == 0 ? (uint)frameName.Length : (uint)((frameName.Length / 4) + 1) * 4))
-                .Concat(new byte[] { 0xff, 0xff, 0x03, 0x18 })
-                .Concat(frameName.Select(c => (byte)c))
-                .Concat(new byte[4 - (frameName.Length % 4)])
-                .ToArray();
 
             dff.Clump.FrameList.Frames.Add(new Frame());
             dff.Clump.FrameList.Extensions.Add(new Extension()
             {
-                Data = buffer
+                Extensions = new List<IExtensionPlugin>()
+                {
+                    new FramePlugin()
+                    {
+                        Value = "Frame"
+                    }
+                }
             });
             dff.Clump.Atomics.Add(new Atomic()
             {

@@ -34,7 +34,8 @@ namespace RenderWareIo.Structs.Dff
             Sphere.ByteCountWithHeader + 
             MorphTargets.Sum(morphTarget => morphTarget.ByteCountWithHeader)
         );
-        public uint ByteCount => (uint)(ContentByteCount + Extension.Size + 2 * 12) + MaterialList.ByteCountWithHeader;
+
+        public uint ByteCount => (uint)(ContentByteCount + Extension.ByteCount + 2 * 12) + MaterialList.ByteCountWithHeader;
         public uint ByteCountWithHeader => ByteCount + 12;
 
         public Geometry()
@@ -97,7 +98,7 @@ namespace RenderWareIo.Structs.Dff
             this.MorphTargets = new List<MorphTarget>();
             for (int i = 0; i < this.MorphTargetCount; i++)
             {
-                MorphTargets.Add(new MorphTarget().Read(stream, (this.Flags & 0x10) != 0, this.VertexCount));
+                MorphTargets.Add(new MorphTarget().Read(stream, this.VertexCount));
             }
         }
 

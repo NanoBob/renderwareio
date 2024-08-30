@@ -10,7 +10,7 @@ namespace RenderWareBuilders
     {
         public ushort Index { get; internal set; }
         public Vector3 Position { get; set; }
-        public Vector3 Normal { get; set; }
+        public Vector3? Normal { get; set; }
         public Vector2 Uv { get; set; }
     }
 
