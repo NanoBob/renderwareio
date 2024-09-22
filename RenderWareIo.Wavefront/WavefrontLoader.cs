@@ -35,20 +35,26 @@ namespace RenderWareIo.Wavefront
 
     public class WavefrontLoader : IDisposable
     {
-        private readonly FileStream fileStream;
+        private readonly FileStream? fileStream;
         private readonly IObjLoader objLoader;
         private readonly LoadResult loadResult;
 
-        public WavefrontLoader(string fileName)
+        public WavefrontLoader(string fileName, IMaterialStreamProvider? materialStreamProvider = null)
         {
             this.fileStream = File.OpenRead(fileName);
-            this.objLoader = new ObjLoaderFactory().Create(new MaterialStreamProvider(Path.GetDirectoryName(fileName)));
+            this.objLoader = new ObjLoaderFactory().Create(materialStreamProvider ?? new MaterialStreamProvider(Path.GetDirectoryName(fileName)));
             this.loadResult = objLoader.Load(fileStream);
+        }
+
+        public WavefrontLoader(Stream stream, IMaterialStreamProvider materialStreamProvider)
+        {
+            this.objLoader = new ObjLoaderFactory().Create(materialStreamProvider);
+            this.loadResult = objLoader.Load(stream);
         }
 
         public void Dispose()
         {
-            fileStream.Dispose();
+            this.fileStream?.Dispose();
         }
 
         public string[] GetAllGroups()
